@@ -28,10 +28,10 @@ public class jobseeker{
 
             // takes input from terminal
             //input = new DataInputStream(System.in);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            //BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
             // sends output to the socket
-            out = new DataOutputStream(socket.getOutputStream());
+            //out = new DataOutputStream(socket.getOutputStream());
         }
 
         catch(UnknownHostException u) {
