@@ -88,12 +88,12 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class MyClientSocket {
+public class jobseeker {
 
     private Socket socket;
     private Scanner scanner;
 
-    private MyClientSocket(InetAddress serverAddress, int serverPort) throws Exception {
+    private jobseeker(InetAddress serverAddress, int serverPort) throws Exception {
         this.socket = new Socket(serverAddress, serverPort);
         this.scanner = new Scanner(System.in);
     }
@@ -111,7 +111,7 @@ public class MyClientSocket {
     }
     
     public static void main(String[] args) throws Exception {
-        MyClientSocket client = new MyClientSocket(
+        jobseeker client = new jobseeker(
                 InetAddress.getByName(args[0]), 
                 Integer.parseInt(args[1]));
         
