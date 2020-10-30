@@ -16,6 +16,7 @@ public class jobcreator{
                 InputStream input = socket.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                 System.out.println("Job Creator connected");
+                System.out.println("Client address is: "+client);
                 String line;
 
                 while(true){
@@ -26,12 +27,12 @@ public class jobcreator{
                                     // Sending data
                     OutputStream output = socket.getOutputStream();
                     PrintWriter writer = new PrintWriter(output, true);
-                    System.out.println("Client address is: "+client);
+                    
                     writer.println("Job Creator Message");
 
                 // 
-                socket.close();
-                serversocket.close();
+                    socket.close();
+                    serversocket.close();
                 }
                 
                 
