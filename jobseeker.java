@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
 
 // client 
 //Ariya is working on it
@@ -9,9 +10,10 @@ public class jobseeker{
 
     public static void main(String args[]){
 
+        Scanner sc = new Scanner(System.in);
         // initialize socket and input output streams
         Socket socket            = null;
-        DataInputStream  input   = null;
+        //DataInputStream  input   = null;
         DataOutputStream out     = null;
         // constructor to put ip address and port
 
@@ -19,12 +21,14 @@ public class jobseeker{
         String hostname = "127.0.0.1"; // to be changed later
         int port = 80;
 
+        InputStream input = null;
         try {
             socket = new Socket(hostname, port);
             System.out.println("Connected");
 
             // takes input from terminal
-            input = new DataInputStream(System.in);
+            //input = new DataInputStream(System.in);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
             // sends output to the socket
             out = new DataOutputStream(socket.getOutputStream());
@@ -42,16 +46,16 @@ public class jobseeker{
 // keep reading until "Over" is input -- Reading from the input
         while (!line.equals("Over"))
         {
-            try
-            {
-                line = input.readLine();
-                out.writeUTF(line);
-            }
+            
+            
+                line =sc.nextLine();
+                System.out.println(line);
+            
 
-            catch(IOException i)
-            {
-                System.out.println(i);
-            }
+            //catch(IOException i)
+            //{
+            //    System.out.println(i);
+            //}
         }
 //------------------------------------------------------------------------
 
