@@ -14,7 +14,7 @@ public class jobseeker{
         // initialize socket and input output streams
         Socket socket            = null;
         //DataInputStream  input   = null;
-        DataOutputStream out     = null;
+        //DataOutputStream out     = null;
         // constructor to put ip address and port
 
 
@@ -28,10 +28,10 @@ public class jobseeker{
 
             // takes input from terminal
             //input = new DataInputStream(System.in);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+            //BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
             // sends output to the socket
-            out = new DataOutputStream(socket.getOutputStream());
+            //out = new DataOutputStream(socket.getOutputStream());
         }
 
         catch(UnknownHostException u) {
@@ -46,11 +46,11 @@ public class jobseeker{
 // keep reading until "Over" is input -- Reading from the input
         while (!line.equals("Over"))
         {
-            
-            
+
+
                 line =sc.nextLine();
                 System.out.println(line);
-            
+
 
             //catch(IOException i)
             //{
@@ -62,8 +62,8 @@ public class jobseeker{
 //closing the connection
         try
         {
-            input.close();
-            out.close();
+            //input.close();
+            //out.close();
             socket.close();
         }
         catch(IOException i)
