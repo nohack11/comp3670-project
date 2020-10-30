@@ -14,7 +14,7 @@ public class jobseeker{
         // initialize socket and input output streams
         Socket socket            = null;
         //DataInputStream  input   = null;
-        DataOutputStream out     = null;
+        //DataOutputStream out     = null;
         // constructor to put ip address and port
 
 
@@ -46,11 +46,11 @@ public class jobseeker{
 // keep reading until "Over" is input -- Reading from the input
         while (!line.equals("Over"))
         {
-            
-            
+
+
                 line =sc.nextLine();
                 System.out.println(line);
-            
+
 
             //catch(IOException i)
             //{
@@ -62,8 +62,8 @@ public class jobseeker{
 //closing the connection
         try
         {
-            input.close();
-            out.close();
+            //input.close();
+            //out.close();
             socket.close();
         }
         catch(IOException i)
