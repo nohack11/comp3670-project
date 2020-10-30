@@ -1,13 +1,16 @@
 import java.io.*;
 import java.net.*;
+import java.util.Scanner;
+
 //java server 
-public class jobcreator{
-    
+public class jobcreator {
+
     public static void main(String[] args) {
         int port = 80;
 
-       try{
+        try {
             ServerSocket serversocket = new ServerSocket(port);
+            Scanner sc = new Scanner(System.in);
             while (true) {
                 Socket socket = serversocket.accept();
                 String client = socket.getInetAddress().getHostAddress();
