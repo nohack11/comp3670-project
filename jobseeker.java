@@ -17,17 +17,9 @@ public class jobseeker{
 
 
         String hostname = "127.0.0.1"; // to be changed later
-        //URL url; // we could also use a URL
         int port = 80;
 
         try {
-<<<<<<< HEAD
-
-            
-        } catch (Exception e) {
-            //TODO: handle exception
-            System.out.println(e);
-=======
             socket = new Socket(hostname, port);
             System.out.println("Connected");
 
@@ -73,7 +65,6 @@ public class jobseeker{
         catch(IOException i)
         {
             System.out.println(i);
->>>>>>> f2098e2e98fc4e2833b587df86e34b9a94617cc5
         }
 //------------------------------------------------------------------------------------
     }
