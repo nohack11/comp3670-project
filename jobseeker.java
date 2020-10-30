@@ -17,7 +17,6 @@ public class jobseeker{
 
 
         String hostname = "127.0.0.1"; // to be changed later
-        //URL url; // we could also use a URL
         int port = 80;
 
         try {
