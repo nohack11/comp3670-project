@@ -15,7 +15,7 @@ public class jobcreator{
                 // Receiving data
                 InputStream input = socket.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                
+                System.out.println("Job Creator connected");
                 String line;
 
                 while(true){
@@ -30,9 +30,11 @@ public class jobcreator{
                     writer.println("Job Creator Message");
 
                 // 
-                }
                 socket.close();
                 serversocket.close();
+                }
+                
+                
             }  
        }
 
