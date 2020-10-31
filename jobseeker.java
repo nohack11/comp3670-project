@@ -2,13 +2,13 @@ import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 
-// client 
+// client
 //Ariya is working on it
 public class jobseeker{
 
 
 
-    public static void main(String args[]){
+    public static void main(String args[]) throws IOException {
 
         Scanner sc = new Scanner(System.in);
         // initialize socket and input output streams
@@ -27,7 +27,7 @@ public class jobseeker{
             System.out.println("Connected");
 
             // takes input from terminal
-            
+
             input = socket.getInputStream();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -42,11 +42,11 @@ public class jobseeker{
         }
 
         catch(UnknownHostException u) {
-                System.out.println(u);
+            System.out.println(u);
         }
 
         catch(Exception i) {
-                System.out.println(i);
+            System.out.println(i);
         }
 
         String line = "";
@@ -116,14 +116,13 @@ public class jobseeker{
 //             out.flush();
 //         }
 //     }
-    
+
 //     public static void main(String[] args) throws Exception {
 //         jobseeker client = new jobseeker(
-//                 InetAddress.getByName(args[0]), 
+//                 InetAddress.getByName(args[0]),
 //                 Integer.parseInt(args[1]));
-        
+
 //         System.out.println("\r\nConnected to Server: " + client.socket.getInetAddress());
-//         client.start();                
+//         client.start();
 //     }
 // }
-
