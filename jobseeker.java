@@ -19,34 +19,36 @@ public class jobseeker{
 
 
         String hostname = "127.0.0.1"; // to be changed later
-        int port = 80;
+        int port = 5000;
 
         InputStream input = null;
+       
         try {
             socket = new Socket(hostname, port);
             System.out.println("Connected");
 
+            //sending first
+            OutputStream out = socket.getOutputStream();
+            PrintWriter toserver = new PrintWriter(out, true);
+            System.out.println("======== SENDING DATA  ===========");
+            toserver.println("JobSeeker Message");
+            System.out.println("Message sent ...");
             // takes input from terminal
-
             input = socket.getInputStream();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
             String line;
+            line = reader.readLine();
+            System.out.println("======== MESSAGE RECEIVED ========");
+            System.out.println("From JobCreator:  "+line+"\n");
 
-            while((line = reader.readLine()) != null){
-                System.out.println("From JobCreator:  "+line);
-            }
-            // sends output to the socket
-            //out = new DataOutputStream(socket.getOutputStream());
+            System.out.println("Jobseeker closed");
+            toserver.flush();
         }
 
-        catch(UnknownHostException u) {
-            System.out.println(u);
-        }
-
-        catch(Exception i) {
-            System.out.println(i);
+        catch(Exception e) {
+            System.out.println(e);
         }
 
         String line = "";
