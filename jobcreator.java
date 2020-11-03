@@ -1,10 +1,11 @@
 // A Java program for a Server
 import java.net.*;
+import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 
 //java server 
-public class jobcreator {
+public class Jobcreator {
 
     public static void main(String[] args) {
         int port = 5000;
@@ -25,11 +26,11 @@ public class jobcreator {
                 //System.out.println("");
                 System.out.println("Message from Jobseeker: "+ line);
                 
-                    System.out.println("======== SENDING DATA ===========");
+                System.out.println("======== SENDING DATA ===========");
 
-                                    // Sending data
-                    OutputStream output = socket.getOutputStream();
-                    PrintWriter writer = new PrintWriter(output, true);
+                // Sending data
+                OutputStream output = socket.getOutputStream();
+                PrintWriter writer = new PrintWriter(output, true);
                     
                     writer.println("JobCreator Message");
                     System.out.println("Message sent ...");
@@ -44,10 +45,6 @@ public class jobcreator {
        catch(Exception e){
            System.out.println(e);
        }
-
-    public static void main(String args[])
-    {
-        jobcreator server = new jobcreator(80);
     }
 }
 

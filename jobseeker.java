@@ -1,10 +1,11 @@
 // A Java program for a Client
 import java.net.*;
+import java.io.*;
 import java.util.Scanner;
 
 // client
 //Ariya is working on it
-public class jobseeker{
+public class Jobseeker{
 
 
 
@@ -50,40 +51,8 @@ public class jobseeker{
         catch(Exception e) {
             System.out.println(e);
         }
-
-        // string to read message from input
-        String line = "";
-
-        // keep reading until "Over" is input
-        while (!line.equals("Over"))
-        {
-            try
-            {
-                line = input.readLine();
-                out.writeUTF(line);
-            }
-            catch(IOException i)
-            {
-                System.out.println(i);
-            }
-        }
-
-        // close the connection
-        try
-        {
-            input.close();
-            out.close();
-            socket.close();
-        }
-        catch(IOException i)
-        {
-            System.out.println(i);
-        }
     }
 
-    public static void main(String args[])
-    {
-        Client client = new Client("127.0.0.1", 80);
-    }
+    
 }
 
