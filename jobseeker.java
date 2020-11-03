@@ -1,6 +1,5 @@
 // A Java program for a Client
 import java.net.*;
-<<<<<<< HEAD
 import java.util.Scanner;
 
 // client
@@ -26,24 +25,6 @@ public class jobseeker{
        
         try {
             socket = new Socket(hostname, port);
-=======
-import java.io.*;
-
-public class jobseeker
-{
-    // initialize socket and input output streams
-    private Socket socket		 = null;
-    private DataInputStream input = null;
-    private DataOutputStream out	 = null;
-
-    // constructor to put ip address and port
-    public jobseeker(String address, int port)
-    {
-        // establish a connection
-        try
-        {
-            socket = new Socket(address, port);
->>>>>>> c6d2ac405ce0fb2b9afed081cb9178fed297166b
             System.out.println("Connected");
 
             //sending first
@@ -53,7 +34,6 @@ public class jobseeker
             toserver.println("JobSeeker Message");
             System.out.println("Message sent ...");
             // takes input from terminal
-<<<<<<< HEAD
             input = socket.getInputStream();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
@@ -69,20 +49,6 @@ public class jobseeker
 
         catch(Exception e) {
             System.out.println(e);
-=======
-            input = new DataInputStream(System.in);
-
-            // sends output to the socket
-            out = new DataOutputStream(socket.getOutputStream());
-        }
-        catch(UnknownHostException u)
-        {
-            System.out.println(u);
-        }
-        catch(IOException i)
-        {
-            System.out.println(i);
->>>>>>> c6d2ac405ce0fb2b9afed081cb9178fed297166b
         }
 
         // string to read message from input
