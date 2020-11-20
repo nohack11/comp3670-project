@@ -2,7 +2,7 @@
 import java.net.*;
 import java.io.*;
 import java.util.Scanner;
-
+import org.pcap4j.core.PcapNetworkInterface;
 // client
 //Ariya is working on it
 public class Jobseeker{
