@@ -1,56 +1,55 @@
 
 // A Java program for a Server
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.util.concurrent.*;
 
-import org.pcap4j.Pcap4jPropertiesLoader;
-import org.pcap4j.core.PcapNetworkInterface;
-import org.pcap4j.util.*;
-//java server 
+import java.io.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Scanner;
+
+
+
+// This jobcreator Prints out a message to notify connection with jobseeker
+// JobCreator then prints the IP address of JobSeeker
+
 public class Jobcreator {
 
     public static void main(String[] args) {
-        int port = 5000;
-        PcapNetworkInterface device = null;
+        int port = 5000;// for peer to peer connection change to port = 61555
+
         try {
-            device = new NifSelector().selectNetworkInterface();
             ServerSocket serversocket = new ServerSocket(port);
             Scanner sc = new Scanner(System.in);
-            while (true) {
-                System.out.println("You chose: " + device);
+
+            while (true){
                 Socket socket = serversocket.accept();
                 String client = socket.getInetAddress().getHostAddress();
                     // Receiving data
                 InputStream input = socket.getInputStream();
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+
                 System.out.println("Job Creator connected");
                 System.out.println("Client address is: "+client);
-                System.out.println("======== MESSAGE RECEIVED ========");
-                
-                String line = reader.readLine();
-                //System.out.println("");
-                System.out.println("Message from Jobseeker: "+ line);
-                
-                System.out.println("======== SENDING DATA ===========");
 
-                // Sending data
+                //Jobcreator receiving Data from a connected Jobseeker
+                System.out.println("======== MESSAGE RECEIVED ========");
+                String line = reader.readLine();
+                System.out.println("Message from Jobseeker: "+ line);
+
+                //JobCreator Sending Data to a connected Jobseeker
+                System.out.println("======== SENDING DATA ===========");
                 OutputStream output = socket.getOutputStream();
                 PrintWriter writer = new PrintWriter(output, true);
-                    
-                    writer.println("JobCreator Message");
-                    System.out.println("Message sent ...");
-                    writer.flush();
-                    System.out.println("Jobcreator waiting... ^C to terminate");
-                //TimeUnit.SECONDS.sleep(5);
-                  socket.close();
+                writer.println("JobCreator Message");// the message being sent to jobseeker
+                System.out.println("Message sent ...");
 
-            } 
+                writer.flush();
+                System.out.println("Jobcreator waiting... ^C to terminate");
+                socket.close();
+                sc.close();
+            }
        }
-
        catch(Exception e){
-           System.out.println(e);
+           e.printStackTrace();
        }
     }
 }

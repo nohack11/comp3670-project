@@ -1,55 +1,38 @@
 // A Java program for a Client
-import java.net.*;
+
 import java.io.*;
-import java.util.Scanner;
-import org.pcap4j.core.PcapNetworkInterface;
-// client
+import java.net.Socket;
+
 //Ariya is working on it
 public class Jobseeker{
 
+    public static void main(String[] args) {
 
+        String hostname = "127.0.0.1"; // current IP to be changed later
+        int port = 5000;// for peer to peer connection change to port = 61555
 
-    public static void main(String args[]) throws IOException {
-
-        Scanner sc = new Scanner(System.in);
-        // initialize socket and input output streams
-        Socket socket            = null;
-        //DataInputStream  input   = null;
-        //DataOutputStream out     = null;
-        // constructor to put ip address and port
-
-
-        String hostname = "127.0.0.1"; // to be changed later
-        int port = 5000;
-
-        InputStream input = null;
-       
         try {
-            socket = new Socket(hostname, port);
-            System.out.println("Connected");
+            Socket socket = new Socket(hostname, port);
+            System.out.println("Connected to Jobcreator");
 
-            //sending first
+            // Jobseeker sending Data to a connected Jobcreator
             OutputStream out = socket.getOutputStream();
-            PrintWriter toserver = new PrintWriter(out, true);
+            PrintWriter toServer = new PrintWriter(out, true);
             System.out.println("======== SENDING DATA  ===========");
-            toserver.println("JobSeeker Message");
+            toServer.println("JobSeeker Message");// Message sent to Jobcreator
             System.out.println("Message sent ...");
-            // takes input from terminal
-            input = socket.getInputStream();
 
+            // Jobseeker receiving Data from a connected Jobcreator
+            InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-
-            String line;
-            line = reader.readLine();
+            String line = reader.readLine(); // data received
             System.out.println("======== MESSAGE RECEIVED ========");
             System.out.println("From JobCreator:  "+line+"\n");
-
             System.out.println("Jobseeker closed");
-            toserver.flush();
+            toServer.flush();
         }
-
         catch(Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
