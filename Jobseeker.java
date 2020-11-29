@@ -28,6 +28,13 @@ public class Jobseeker{
             String line = reader.readLine(); // data received
             System.out.println("======== MESSAGE RECEIVED ========");
             System.out.println("From JobCreator:  "+line+"\n");
+
+            // JOB ASSIGNMENTS
+            System.out.println("Waiting for job assignments...");
+            String job = reader.readLine();
+            System.out.println("Job Assignments:");
+            System.out.println("JOB: "+job);
+            toServer.println("done");
             System.out.println("Jobseeker closed");
             toServer.flush();
         }

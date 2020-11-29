@@ -42,6 +42,14 @@ public class Jobcreator {
                 writer.println("JobCreator Message");// the message being sent to jobseeker
                 System.out.println("Message sent ...");
 
+                // JOB ASSIGNMENTS
+                writer.println("Perform your first job\nPrint Job one");
+                String completion = reader.readLine();
+
+                if(completion.contains("done")){
+                    System.out.println("Job Completed");
+                    break;// when job is complete break
+                }
                 writer.flush();
                 System.out.println("Jobcreator waiting... ^C to terminate");
                 socket.close();
