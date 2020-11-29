@@ -39,7 +39,30 @@ public class Jobcreator {
                 writer.println("JobCreator Message"); // the message being sent to jobseeker
                 System.out.println("Message sent...");
 
-                System.out.println("You chose: " + jobOptions());
+                switch(jobOptions()) {
+                    // JOB: Detect if a given IP address or Host Name is online or not
+                    case 1:
+                        System.out.println("1. Detect by IP address.\n2. Detect by host name.");
+                        int mode = sc.nextInt();
+                        if(mode == 1)
+                            System.out.print("Please enter the IP address: ");
+                        else
+                            System.out.print("Please enter the host name: ");
+                        sc.nextLine();
+                        String who = sc.nextLine();
+
+                        // Forward job information to Jobseeker
+                        writer.printf("1,%d,%s\n", mode, who);
+
+                        // Retrieve and output job result from Jobseeker
+                        String result = reader.readLine();
+                        System.out.println(result);
+                        return;
+                    case 2:
+                        return;
+                    default:
+                        System.out.println("Invalid option.");
+                }
 
                 // JOB ASSIGNMENTS
                 writer.println("Perform your first job\nPrint Job one");

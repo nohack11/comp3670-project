@@ -1,6 +1,7 @@
 // A Java program for a Client
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Jobseeker{
@@ -31,6 +32,41 @@ public class Jobseeker{
             // JOB ASSIGNMENTS
             System.out.println("Waiting for job assignments...");
             String job = reader.readLine();
+            String[] tokens = job.split(","); // Contains data of job
+            switch(Integer.parseInt(tokens[0])) {
+                // JOB: Detect if a given IP address or Host Name is online or not
+                case 1:
+                    boolean isOnline;
+                    // Detecting by IP
+                    if(Integer.parseInt(tokens[1]) == 1) {
+                        // Splitting user entered IP address
+                        String newToken = tokens[2].replace('.', ',');
+                        String[] ipString = newToken.split(",");
+
+                        // Converting string IP address into byte array
+                        byte[] ipAddress = new byte[ipString.length];
+                        for(int i = 0; i < ipString.length; i++) {
+                            int part = Integer.parseInt(ipString[i]);
+                            ipAddress[i] = (byte) part;
+                        }
+
+                        // Checking if IP address is online
+                        isOnline = InetAddress.getByAddress(ipAddress).isReachable(5000);
+                    }
+                    // Detecting by Host Name
+                    else
+                        isOnline = InetAddress.getByName(tokens[2]).isReachable(5000); // Checking if Host Name is online
+
+                    // Output of job
+                    if(isOnline)
+                        toServer.println(tokens[2] + " is online.");
+                    else
+                        toServer.println(tokens[2] + " is not online.");
+                    return;
+                case 2:
+                    return;
+                case 3:
+            }
             System.out.println("Job Assignments:");
             System.out.println("JOB: " + job);
             toServer.println("done");
