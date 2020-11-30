@@ -1,8 +1,10 @@
 // A Java program for a Client
 
+//import org.pcap4j.packet.Packet;
+
 import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
+import java.net.*;
+//import java.util.Arrays;
 
 public class Jobseeker{
 
@@ -10,74 +12,96 @@ public class Jobseeker{
 
         String hostname = "127.0.0.1"; // current IP to be changed later
         int port = 5000; // for peer to peer connection change to port = 61555
+        PrintWriter toServer = null;
 
         try {
             Socket socket = new Socket(hostname, port);
             System.out.println("Connected to Jobcreator.");
 
-            // Jobseeker sending Data to a connected Jobcreator
+            // Creating output stream to Jobcreator
             OutputStream out = socket.getOutputStream();
-            PrintWriter toServer = new PrintWriter(out, true);
-            System.out.println("========= SENDING DATA ===========");
-            toServer.println("JobSeeker Message"); // Message sent to Jobcreator
-            System.out.println("Message sent ...");
+            toServer = new PrintWriter(out, true);
 
             // Jobseeker receiving Data from a connected Jobcreator
             InputStream input = socket.getInputStream();
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            String line = reader.readLine(); // data received
-            System.out.println("======== MESSAGE RECEIVED ========");
-            System.out.println("From JobCreator:  " + line + "\n");
 
-            // JOB ASSIGNMENTS
-            System.out.println("Waiting for job assignments...");
-            String job = reader.readLine();
-            String[] tokens = job.split(","); // Contains data of job
-            switch(Integer.parseInt(tokens[0])) {
-                // JOB: Detect if a given IP address or Host Name is online or not
-                case 1:
-                    boolean isOnline;
-                    // Detecting by IP
-                    if(Integer.parseInt(tokens[1]) == 1) {
-                        // Splitting user entered IP address
-                        String newToken = tokens[2].replace('.', ',');
-                        String[] ipString = newToken.split(",");
+            while(true) {
+                // JOB ASSIGNMENTS
+                System.out.println("Waiting for job assignments...");
+                String job = reader.readLine();
+                System.out.println("Job received: " + job);
+                String[] tokens = job.split(","); // Contains data of job
 
-                        // Converting string IP address into byte array
-                        byte[] ipAddress = new byte[ipString.length];
-                        for(int i = 0; i < ipString.length; i++) {
-                            int part = Integer.parseInt(ipString[i]);
-                            ipAddress[i] = (byte) part;
-                        }
+                // Pick job (first token determines job)
+                switch (Integer.parseInt(tokens[0])) {
+                    // JOB: Detect if a given IP address or Host Name is online or not
+                    case 1:
+                        boolean isOnline;
+                        // Detecting by IP
+                        if (Integer.parseInt(tokens[1]) == 1)
+                            isOnline = InetAddress.getByAddress(convertIP(tokens[2])).isReachable(5000); //Checking if IP address is online
 
-                        // Checking if IP address is online
-                        isOnline = InetAddress.getByAddress(ipAddress).isReachable(5000);
-                    }
-                    // Detecting by Host Name
-                    else
-                        isOnline = InetAddress.getByName(tokens[2]).isReachable(5000); // Checking if Host Name is online
+                            // Detecting by Host Name
+                        else
+                            isOnline = InetAddress.getByName(tokens[2]).isReachable(5000); // Checking if Host Name is online
 
-                    // Output of job
-                    if(isOnline)
-                        toServer.println(tokens[2] + " is online.");
-                    else
-                        toServer.println(tokens[2] + " is not online.");
-                    return;
-                case 2:
-                    return;
-                case 3:
+                        // Output of job
+                        if (isOnline)
+                            toServer.println(tokens[2] + " is online.");
+                        else
+                            toServer.println(tokens[2] + " is not online.");
+                        break;
+                    // JOB: Detect the status of a given port at a given IP address
+                    case 2:
+                        // Output of job
+                        toServer.println(job2(tokens[1], Integer.parseInt(tokens[2])));
+                        break;
+                    case 3:
+                        // Disconnect from Jobcreator and exit
+                        toServer.flush();
+                        socket.close();
+                        reader.close();
+                        return;
+                }
+                toServer.flush();
             }
-            System.out.println("Job Assignments:");
-            System.out.println("JOB: " + job);
-            toServer.println("done");
-            System.out.println("Jobseeker closed.");
-            toServer.flush();
         }
         catch(Exception e) {
-            e.printStackTrace();
+            if (toServer != null)
+                toServer.println("error"); // Input error
         }
     }
 
-    
+    // Converts string IP address to byte[]
+    public static byte[] convertIP(String IPString) {
+        String replaced = IPString.replace('.', ',');
+        String[] newIPString = replaced.split(",");
+
+        byte[] ipAddress = new byte[newIPString.length];
+        for(int i = 0; i < newIPString.length; i++) {
+            ipAddress[i] = (byte) Integer.parseInt(newIPString[i]);
+        }
+
+        return ipAddress;
+    }
+
+    // Outputs Job2
+    public static String job2(String hostName, int portNum) {
+        String output = "closed";
+        try {
+            (new DatagramSocket(portNum, InetAddress.getByAddress(convertIP(hostName)))).close();
+            output = "UDP open";
+            (new Socket(hostName, portNum)).close();
+            return "TCP and UDP open";
+        } catch(IOException ignored) { }
+
+        try {
+            (new Socket(hostName, portNum)).close();
+            output = "TCP open";
+        } catch(IOException ignored) { }
+
+        return output;
+    }
 }
 
