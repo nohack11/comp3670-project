@@ -4,20 +4,25 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
 
 // This jobcreator Prints out a message to notify connection with jobseeker
 // JobCreator then prints the IP address of JobSeeker
 
 public class Jobcreator {
     public static Scanner sc = new Scanner(System.in);
-
+    public static Thread thread  = new Thread();
+    public static Socket socket = null;
+    public static ServerSocket serversocket = null;
     public static void main(String[] args) {
         int port = 5000; // for peer to peer connection change to port = 61555
         try {
-            ServerSocket serversocket = new ServerSocket(port);
+            serversocket = new ServerSocket(port);
 
             while(true) {
-                Socket socket = serversocket.accept();
+
+                run();
+
                 String client = socket.getInetAddress().getHostAddress();
 
                 // Opening input stream with Jobseeker
@@ -107,12 +112,20 @@ public class Jobcreator {
         }
         sc.close();
     }
-
+    public static void run(){
+        try {
+            socket = serversocket.accept();
+            thread.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static int jobOptions() {
         System.out.println("What job would you like Jobseeker to perform?");
         System.out.println("1. Detect if a given IP address or Host Name is online or not.");
         System.out.println("2. Detect the status of a given port at a given IP address.");
         System.out.println("3. Disconnect from Jobseeker.");
+        System.out.println("");
 
         return sc.nextInt();
     }
