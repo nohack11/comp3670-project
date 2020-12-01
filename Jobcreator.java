@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
+//import java.util.concurrent.ExecutorService;
 
 // This jobcreator Prints out a message to notify connection with jobseeker
 // JobCreator then prints the IP address of JobSeeker
@@ -101,8 +101,9 @@ public class Jobcreator {
                         break;
                 } while(true);
 
-                if(answer == 1)
+                if(answer == 1) {
                     System.out.println("Waiting for Jobseeker...");
+                }
                 else
                     break;
             }
@@ -110,12 +111,14 @@ public class Jobcreator {
         catch(Exception e){
             e.printStackTrace();
         }
+        thread.interrupt();
         sc.close();
     }
     public static void run(){
         try {
             socket = serversocket.accept();
-            thread.start();
+            if(thread.isInterrupted())
+                thread.start();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -124,8 +127,7 @@ public class Jobcreator {
         System.out.println("What job would you like Jobseeker to perform?");
         System.out.println("1. Detect if a given IP address or Host Name is online or not.");
         System.out.println("2. Detect the status of a given port at a given IP address.");
-        System.out.println("3. Disconnect from Jobseeker.");
-        System.out.println("");
+        System.out.println("3. Disconnect from Jobseeker.\n");
 
         return sc.nextInt();
     }

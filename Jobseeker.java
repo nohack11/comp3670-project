@@ -90,7 +90,7 @@ public class Jobseeker{
     public static String job2(String hostName, int portNum) {
         String output = "closed";
         try {
-            (new DatagramSocket(portNum, InetAddress.getByAddress(convertIP(hostName)))).close();
+            (new DatagramSocket(portNum, InetAddress.getByName(hostName))).close();
             output = "UDP open";
             (new Socket(hostName, portNum)).close();
             return "TCP and UDP open";
