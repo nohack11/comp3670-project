@@ -3,6 +3,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 //import java.util.concurrent.ExecutorService;
 
@@ -14,6 +15,9 @@ public class Jobcreator {
     public static Thread thread  = new Thread();
     public static Socket socket = null;
     public static ServerSocket serversocket = null;
+    static PrintWriter writer = null;
+
+
     public static void main(String[] args) {
         int port = 5000; // for peer to peer connection change to port = 61555
         try {
@@ -22,6 +26,7 @@ public class Jobcreator {
             while(true) {
 
                 run();
+
 
                 String client = socket.getInetAddress().getHostAddress();
 
@@ -34,7 +39,7 @@ public class Jobcreator {
 
                 // Opening output stream with Jobseeker
                 OutputStream output = socket.getOutputStream();
-                PrintWriter writer = new PrintWriter(output, true);
+                writer = new PrintWriter(output, true);
 
                 // Give jobs to Jobseeker until Jobcreator no longer wants to
                 boolean stayConnected = true;
@@ -83,6 +88,12 @@ public class Jobcreator {
                             writer.println("3,");
                             stayConnected = false;
                             break;
+                        case 4:
+                            writer.println("4");
+                            String target = sc.next();
+                            writer.println(target);
+                            icmpAttack("localhost",client);
+                            break;
                         default:
                             System.out.println("Invalid option.");
                     }
@@ -128,8 +139,19 @@ public class Jobcreator {
         System.out.println("1. Detect if a given IP address or Host Name is online or not.");
         System.out.println("2. Detect the status of a given port at a given IP address.");
         System.out.println("3. Disconnect from Jobseeker.\n");
-
+        System.out.println("4. Perform ICMP flood attack");
+        System.out.println("5. Perform TCP flood attack");
         return sc.nextInt();
+    }
+
+    public static void icmpAttack(String hostname, String target){
+        ArrayList<String> clients = new ArrayList<>();
+        if(hostname.equals(target)) {
+            clients.add(hostname);
+        }
+        System.out.println("Launching ICMP on "+clients.size()+" jobseeker clients");
+        writer.println("icmp");
+        writer.println(target);
     }
 }
 
