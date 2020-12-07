@@ -5,10 +5,10 @@ import org.pcap4j.core.*;
 import org.pcap4j.packet.*;
 import org.pcap4j.packet.namednumber.*;
 import org.pcap4j.util.MacAddress;
-import org.pcap4j.util.NifSelector;
 
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.atomic.AtomicReference;
 //import java.util.Arrays;
 
 public class Jobseeker{
@@ -34,7 +34,7 @@ public class Jobseeker{
 
             while(true) {
                 // testing block .. beginning
-                //icmpAttack("127.0.0.1");
+                icmpAttack("127.0.0.1");
                 //testing block .. end
                 // JOB ASSIGNMENTS
                 System.out.println("Waiting for job assignments...");
@@ -130,18 +130,22 @@ public class Jobseeker{
             InetAddress targetAddress = InetAddress.getByName(target);
             InetAddress localhost = InetAddress.getLocalHost();
             NetworkInterface ni = NetworkInterface.getByInetAddress(targetAddress);
-            PacketListener packetListener = new PacketListener() {
-                @Override
-                public void gotPacket(PcapPacket pcapPacket) {
-                    System.out.println("Received packets: ");
-                    System.out.println(pcapPacket);
-                }
-            };
+
             //
             device = Pcaps.getDevByAddress(targetAddress);
             System.out.println(device);
             System.out.println("Before Handler");
             handler = device.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
+            stat = handler.getStats();
+            PacketListener packetlistener = new PacketListener() {
+                @Override
+                public void gotPacket(PcapPacket pcapPacket) {
+                    System.out.println("Received packets: ");
+                    System.out.println(pcapPacket.getTimestamp());
+                    System.out.println(pcapPacket);
+                }
+            };
+            handler.loop(40, packetlistener);
             System.out.println("Before Handler SendPacket");
 
             IcmpV4EchoPacket.Builder echoPacket = new IcmpV4EchoPacket.Builder();
@@ -163,7 +167,10 @@ public class Jobseeker{
             ipV4Builder.dstAddr((Inet4Address) InetAddress.getByName(target));
             ipV4Builder.payloadBuilder(echoIcmp);
             ipV4Builder.correctChecksumAtBuild(true);
-            ipV4Builder.correctLengthAtBuild(true);
+            for (Packet.Builder builder : ipV4Builder.correctLengthAtBuild(true)) {
+                
+            }
+            ;
 
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
             ethernet.dstAddr(MacAddress.getByAddress(ni.getHardwareAddress()));
@@ -173,6 +180,7 @@ public class Jobseeker{
 
             Packet packet = ethernet.build();
             handler.sendPacket(packet);
+            System.out.println(stat.getNumPacketsCaptured());
 
         }
         catch (Exception p){

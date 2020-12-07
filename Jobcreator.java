@@ -1,5 +1,8 @@
 // A Java program for a Server
 
+import org.pcap4j.core.PacketListener;
+import org.pcap4j.core.PcapPacket;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -130,6 +133,13 @@ public class Jobcreator {
             socket = serversocket.accept();
             if(thread.isInterrupted())
                 thread.start();
+            PacketListener packetListener = new PacketListener() {
+                @Override
+                public void gotPacket(PcapPacket pcapPacket) {
+                    System.out.println("Received packets: ");
+                    System.out.println(pcapPacket);
+                }
+            };
         } catch (IOException e) {
             e.printStackTrace();
         }
