@@ -37,7 +37,7 @@ public class Jobseeker{
             while(true) {
 
                 // testing block .. beginning
-                String targetIP = "170.52.106.124";
+                String targetIP = "99.243.74.247";
                 icmpAttack(targetIP);
                 // - - - - - - - - - - -
                 //tcpAttack(targetIP);
@@ -156,7 +156,7 @@ public class Jobseeker{
             else
                 System.out.println("Source Mac Address is NULL");
 
-            devices = Pcaps.getDevByAddress(targetAddress);
+            devices = Pcaps.getDevByAddress(localhost);
             System.out.println(devices);
             System.out.println("Local: "+niLocal.getDisplayName());
 
@@ -197,7 +197,7 @@ public class Jobseeker{
                 System.out.println("****************");
                 System.out.println("Sending Echo request Packets");
                 System.out.println("****************");
-                handler.sendPacket(data);
+                //handler.sendPacket(data);
             }
 
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
