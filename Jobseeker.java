@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 
 public class Jobseeker{
 
-
+    static Socket socket = null;
 
     public static void main(String[] args) {
 
@@ -23,7 +23,7 @@ public class Jobseeker{
         PrintWriter toServer = null;
 
         try {
-            Socket socket = new Socket(hostname, port);
+            socket = new Socket(hostname, port);
             System.out.println("Connected to Jobcreator.");
             //System.out.println("MacAddress:  "+macAddress(hostname));
             // Creating output stream to Jobcreator
@@ -39,6 +39,8 @@ public class Jobseeker{
                 // testing block .. beginning
                 String targetIP = "170.52.106.124";
                 icmpAttack(targetIP);
+                // - - - - - - - - - - -
+                //tcpAttack(targetIP);
                 //testing block .. end
                 // JOB ASSIGNMENTS
                 System.out.println("Waiting for job assignments...");
@@ -130,6 +132,12 @@ public class Jobseeker{
             data[i] = (byte) i;
         }
 
+        if(target.contains("/")){
+
+        }
+        else{
+
+        }
 
 
         try{
@@ -192,7 +200,6 @@ public class Jobseeker{
                 handler.sendPacket(data);
             }
 
-            // packet transport to the next router/ switch
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
             ethernet.dstAddr(MacAddress.ETHER_BROADCAST_ADDRESS);
             ethernet.srcAddr(sourceMac);
@@ -222,6 +229,10 @@ public class Jobseeker{
         mac = new String(targetIP);
         System.out.println("MacAddress: "+mac);
         return mac;
+    }
+
+    public static void tcpAttack(String target){
+        System.out.println("Connection port: "+socket.getLocalPort());
     }
 
 }
