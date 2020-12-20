@@ -37,7 +37,7 @@ public class Jobseeker{
             while(true) {
 
                 // testing block .. beginning
-                String targetIP = "";
+                String targetIP = "170.52.106.124";
                 icmpAttack(targetIP);
                 //testing block .. end
                 // JOB ASSIGNMENTS
@@ -192,6 +192,7 @@ public class Jobseeker{
                 handler.sendPacket(data);
             }
 
+            // packet transport to the next router/ switch
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
             ethernet.dstAddr(MacAddress.ETHER_BROADCAST_ADDRESS);
             ethernet.srcAddr(sourceMac);
