@@ -68,11 +68,18 @@ public class Jobcreator {
                         // JOB: Detect if a given IP address or Host Name is online or not
                         case 1:
                             System.out.println("1. Detect by IP address.\n2. Detect by host name.");
+                            fw.write("Job Create: 1. Detect by IP address.\n2. Detect by host name.\n");
+
                             int mode = sc.nextInt();
-                            if (mode == 1)
+                            if (mode == 1) {
                                 System.out.print("Please enter the IP address: ");
-                            else
+                                fw.write("Job Create: 1. Please enter the IP address: \n");
+                            }
+                            else {
                                 System.out.print("Please enter the host name: ");
+                                fw.write("Job Create: Please enter the host name: \n");
+                            }
+
                             sc.nextLine();
                             String who = sc.nextLine();
 
