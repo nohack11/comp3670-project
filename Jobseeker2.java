@@ -9,6 +9,14 @@ public class Jobseeker2 {
     public static PrintWriter writer;
     public static boolean unknownHost;
 
+    public static String getHostname() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch(UnknownHostException e) {
+            return "unknown";
+        }
+    }
+
     public static void getIOStreams() {
         try {
             input = socket.getInputStream();
@@ -151,7 +159,10 @@ public class Jobseeker2 {
 
     public static void main(String[] args) {
         int port = 5000;
-        String hostname = "localhost";
+        String hostname = getHostname();
+        if(hostname.compareTo("unknown") == 0)
+            hostname = "localhost";
+
         while(true) {
             if(!setSocket(hostname, port))
                 break;
