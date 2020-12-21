@@ -133,12 +133,14 @@ public class Jobcreator {
                             stayConnected = false;
                             break;
                         case 4:
-                            writer.println("4");
+                            writer.println("4,");
+                            System.out.println("Enter the IP address you would like to launch an attack on:");
                             String target = sc.next();
                             writer.println(target);
-                            icmpAttack("localhost",client);
+                            //icmpAttack("localhost",client);
                             break;
                         case 5:
+                            writer.println("5,");
                             System.out.println("Enter IP address:");
                             String targetIp = sc.next();
                             System.out.println("Enter Port number: ");
