@@ -8,6 +8,7 @@ import org.pcap4j.util.MacAddress;
 
 import java.io.*;
 import java.net.*;
+import java.util.List;
 
 
 public class Jobseeker{
@@ -286,13 +287,26 @@ public class Jobseeker{
 
     public static void SpyOnNeighbors(){
         PcapHandle handle = null;
-        PcapNetworkInterface networkInterface = null;
+        List<PcapNetworkInterface> networkInterface = null;
         PcapStat packetStat;
+        PcapDumper dumper = null;
 
         System.out.println("----- Spying on My neighbors ----");
 
         try {
-            handle = networkInterface.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
+            if(networkInterface == null){
+                System.out.println("No interfaces discovered");
+            }
+            else{
+
+
+                for(int i=0; i< networkInterface.size(); i++){
+                    networkInterface.add(i, Pcaps.findAllDevs()); = Pcaps.findAllDevs();
+                    System.out.println(networkInterface.get(i));
+                }
+            }
+
+
         } catch (PcapNativeException e) {
             e.printStackTrace();
         }
