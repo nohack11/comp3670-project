@@ -5,6 +5,7 @@ import org.pcap4j.core.*;
 import org.pcap4j.packet.*;
 import org.pcap4j.packet.namednumber.*;
 import org.pcap4j.util.MacAddress;
+import org.pcap4j.util.NifSelector;
 
 import java.io.*;
 import java.net.*;
@@ -287,27 +288,17 @@ public class Jobseeker{
 
     public static void SpyOnNeighbors(){
         PcapHandle handle = null;
-        List<PcapNetworkInterface> networkInterface = null;
+        PcapNetworkInterface networkInterface = null;
         PcapStat packetStat;
         PcapDumper dumper = null;
 
         System.out.println("----- Spying on My neighbors ----");
 
         try {
-            if(networkInterface == null){
-                System.out.println("No interfaces discovered");
-            }
-            else{
-
-
-                for(int i=0; i< networkInterface.size(); i++){
-                    networkInterface.add(i, Pcaps.findAllDevs()); = Pcaps.findAllDevs();
-                    System.out.println(networkInterface.get(i));
-                }
-            }
-
-
-        } catch (PcapNativeException e) {
+            System.out.println("All the neighbors");
+            networkInterface = new NifSelector().selectNetworkInterface();
+            System.out.println("You chose: "+networkInterface);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
