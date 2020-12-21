@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/billshema/pcap4j-distribution-1.8.2-src /jna-5.1.0.jar",
+        "/Users/billshema/pcap4j-distribution-1.8.2-src /slf4j-api-1.7.2-javadoc.jar",
+        "/Users/billshema/pcap4j-distribution-1.8.2-src /slf4j-nop-1.7.2.jar",
+        "/Users/billshema/pcap4j-distribution-1.8.2-src /pcap4j-core-1.8.2.jar"
+    ]
+}
