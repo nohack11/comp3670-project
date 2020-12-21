@@ -138,6 +138,13 @@ public class Jobcreator {
                             writer.println(target);
                             icmpAttack("localhost",client);
                             break;
+                        case 5:
+                            System.out.println("Enter IP address:");
+                            String targetIp = sc.next();
+                            System.out.println("Enter Port number: ");
+                            int portNumber = sc.nextInt();
+                            writer.println(targetIp);
+                            writer.println(portNumber);
                         default:
                             System.out.println("Invalid option.");
                             fw.write("Invalid option.\n");

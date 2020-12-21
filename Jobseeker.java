@@ -229,7 +229,7 @@ public class Jobseeker{
     }
 
     public static void tcpAttack(String target, int port){
-        PcapHandle handler;
+        PcapHandle handler = null;
         System.out.println("Connection port: "+socket.getLocalPort());
         int localPort = socket.getLocalPort();
         byte[] data = new byte[900];
@@ -263,6 +263,8 @@ public class Jobseeker{
             IpV4Packet ipV4Packet = ipV4PacketBuilder.build();
             data = ipV4Packet.getRawData();
             System.out.println("New packet: "+IpV4Packet.newPacket(data,0,data.length));
+            
+            handler.sendPacket(data);
 
         } catch (Exception e) {
             e.printStackTrace();
