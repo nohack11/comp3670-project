@@ -71,7 +71,8 @@ public class GUI extends JPanel {
     }
 
     public void job2() {
-        output.setText("Output: " + jobcreator2.job2(input1.getText(), input2.getText()));
+        String result = jobcreator2.job2(input1.getText(), input2.getText());
+        output.setText("Output: " + result);
         output.setVisible(true);
         ok.setVisible(true);
         panel3.revalidate();

@@ -80,7 +80,7 @@ public class Jobseeker2 {
                     writer.println(tokens[2] + " is online.");
                 else {
                     if(unknownHost)
-                        writer.println(tokens[2] + " is an unknown host");
+                        writer.println(tokens[2] + " is an unknown host.");
                     else
                         writer.println(tokens[2] + " is not online.");
                     unknownHost = false;
@@ -89,7 +89,12 @@ public class Jobseeker2 {
             // JOB: Detect the status of a given port at a given IP address
             case 2:
                 // Output of job
-                writer.println("The status of port " + tokens[1] + " at IP address " + tokens[2] + " is: " + TCPUDPOpenClose(Integer.parseInt(tokens[1]), tokens[2]));
+                String output = TCPUDPOpenClose(Integer.parseInt(tokens[1]), tokens[2]);
+                if(unknownHost)
+                        writer.println(tokens[2] + " is an unknown host.");
+                else
+                    writer.println("The status of port " + tokens[1] + " at IP address " + tokens[2] + " is: " + output);
+                unknownHost = false;
                 break;
             default:
                 writer.println("Other job output.");
@@ -126,7 +131,8 @@ public class Jobseeker2 {
         try {
             ipAddress = InetAddress.getByAddress(convertIP(ip));
         } catch (UnknownHostException e) {
-            return "unknown host";
+            unknownHost = true;
+            return "";
         }
         try {
             (new DatagramSocket(portNum, ipAddress)).close();
