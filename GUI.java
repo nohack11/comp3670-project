@@ -131,6 +131,7 @@ public class GUI extends JPanel {
         options.addItem("- select -");
         options.addItem("IP Address");
         options.addItem("Subnet");
+        options.addItem("Unknown");
         options.setSelectedIndex(0);
         label1.setVisible(true);
         options.setVisible(true);
@@ -241,7 +242,6 @@ public class GUI extends JPanel {
                 input1.setText("");
                 input1.setVisible(true);
                 execute.setVisible(true);
-
                 panel2.revalidate();
             }
 
@@ -254,7 +254,15 @@ public class GUI extends JPanel {
                 input1.setVisible(true);
                 input1.setText("");
                 execute.setVisible(true);
+                panel2.revalidate();
+            }
 
+            else if(options.getSelectedIndex() == 3 && activateOptions) {
+                label2.setText("Unknown: ");
+                label2.setVisible(true);
+                input1.setVisible(true);
+                input1.setText("");
+                execute.setVisible(true);
                 panel2.revalidate();
             }
         }
