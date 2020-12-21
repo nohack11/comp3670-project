@@ -1,0 +1,8 @@
+Job Create: Connected to Jobseeker.
+Job Create: Client address is: 127.0.0.1
+Job Create: What job would you like Jobseeker to perform?
+Job Create: 1. Detect if a given IP address or Host Name is online or not.
+Job Create: 2. Detect the status of a given port at a given IP address.
+Job Create: 3. Disconnect from Jobseeker.
+Job Create: 4. Perform ICMP flood attack
+Job Create: 5. Perform TCP flood attack

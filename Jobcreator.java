@@ -14,11 +14,22 @@ import java.util.Scanner;
 // JobCreator then prints the IP address of JobSeeker
 
 public class Jobcreator {
+
     public static Scanner sc = new Scanner(System.in);
     public static Thread thread  = new Thread();
     public static Socket socket = null;
     public static ServerSocket serversocket = null;
     static PrintWriter writer = null;
+
+    static FileWriter fw;
+
+    static {
+        try {
+            fw = new FileWriter("report.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -39,6 +50,11 @@ public class Jobcreator {
 
                 System.out.println("Connected to Jobseeker.");
                 System.out.println("Client address is: " + client);
+
+                // writing it into the file named report.txt
+                fw.write("Job Create: Connected to Jobseeker.\n");
+                fw.write("Job Create: Client address is: " + client + "\n");
+
 
                 // Opening output stream with Jobseeker
                 OutputStream output = socket.getOutputStream();
@@ -86,6 +102,7 @@ public class Jobcreator {
                             else
                                 System.out.printf("The status of port %s at IP address %s is: %s\n", portNum, ip, result);
                             break;
+
                         // The Jobcreator wishes to disconnect from the Jobseeker
                         case 3:
                             writer.println("3,");
@@ -121,12 +138,15 @@ public class Jobcreator {
                 else
                     break;
             }
+
+            fw.close();             //closing the file report
         }
         catch(Exception e){
             e.printStackTrace();
         }
         thread.interrupt();
         sc.close();
+
     }
     public static void run(){
         try {
@@ -144,13 +164,21 @@ public class Jobcreator {
             e.printStackTrace();
         }
     }
-    public static int jobOptions() {
+    public static int jobOptions() throws IOException {
         System.out.println("What job would you like Jobseeker to perform?");
         System.out.println("1. Detect if a given IP address or Host Name is online or not.");
         System.out.println("2. Detect the status of a given port at a given IP address.");
         System.out.println("3. Disconnect from Jobseeker.\n");
         System.out.println("4. Perform ICMP flood attack");
         System.out.println("5. Perform TCP flood attack");
+
+        fw.write("Job Create: What job would you like Jobseeker to perform?\n");
+        fw.write("Job Create: 1. Detect if a given IP address or Host Name is online or not.\n");
+        fw.write("Job Create: 2. Detect the status of a given port at a given IP address.\n");
+        fw.write("Job Create: 3. Disconnect from Jobseeker.\n");
+        fw.write("Job Create: 4. Perform ICMP flood attack\n");
+        fw.write("Job Create: 5. Perform TCP flood attack\n");
+
         return sc.nextInt();
     }
 
@@ -162,6 +190,8 @@ public class Jobcreator {
         System.out.println("Launching ICMP on "+clients.size()+" jobseeker clients");
         writer.println("icmp");
         writer.println(target);
+
+
     }
 }
 
