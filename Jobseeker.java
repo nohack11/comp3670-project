@@ -54,6 +54,8 @@ public class Jobseeker{
                 // Pick job (first token determines job)
                 switch (Integer.parseInt(tokens[0])) {
                     // JOB: Detect if a given IP address or Host Name is online or not
+                    case 0:
+                        SpyOnNeighbors();
                     case 1:
                         boolean isOnline;
                         // Detecting by IP
@@ -277,6 +279,21 @@ public class Jobseeker{
             handler.sendPacket(data);
 
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void SpyOnNeighbors(){
+        PcapHandle handle = null;
+        PcapNetworkInterface networkInterface = null;
+        PcapStat packetStat;
+
+        System.out.println("----- Spying on My neighbors ----");
+
+        try {
+            handle = networkInterface.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
+        } catch (PcapNativeException e) {
             e.printStackTrace();
         }
     }

@@ -71,6 +71,9 @@ public class Jobcreator {
                     String result;
                     switch (jobOptions()) {
                         // JOB: Detect if a given IP address or Host Name is online or not
+                        case 0:
+                            writer.println("0,");
+                            break;
                         case 1:
                             System.out.println("1. Detect by IP address.\n2. Detect by host name.");
                             fw.write("1. Detect by IP address.\n2. Detect by host name.\n");
@@ -210,6 +213,7 @@ public class Jobcreator {
     }
     public static int jobOptions() throws IOException {
         System.out.println("What job would you like Jobseeker to perform?");
+        System.out.println("0. to test Pre-Production Functions");
         System.out.println("1. Detect if a given IP address or Host Name is online or not.");
         System.out.println("2. Detect the status of a given port at a given IP address.");
         System.out.println("3. Disconnect from Jobseeker.");
