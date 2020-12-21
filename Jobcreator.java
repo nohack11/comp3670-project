@@ -37,7 +37,7 @@ public class Jobcreator {
         int port = 5000; // for peer to peer connection change to port = 61555
         try {
 
-            fw = new FileWriter("report.txt");
+            fw = new FileWriter("jobCreatorOutput.txt");
             fw.write("**Job Creator Out Put**\n\n");
 
             serversocket = new ServerSocket(port);
