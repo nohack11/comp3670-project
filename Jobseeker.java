@@ -205,7 +205,7 @@ public class Jobseeker{
                 System.out.println("Sending Echo request Packets");
                 System.out.println("****************");
                 //comment line below to execute on Windows
-                handler.sendPacket(data);
+                //handler.sendPacket(data);
             }
 
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();

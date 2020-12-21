@@ -147,6 +147,7 @@ public class Jobcreator {
                             int portNumber = sc.nextInt();
                             writer.println(targetIp);
                             writer.println(portNumber);
+                            break;
                         default:
                             System.out.println("Invalid option.");
                             fw.write("Invalid option.\n");
