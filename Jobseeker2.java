@@ -268,7 +268,7 @@ public class Jobseeker2 {
     }
 
     public static void main(String[] args) {
-        int port = 5000;
+        int port = 4999;
         String hostname = getHostname();
         if(hostname.compareTo("unknown") == 0)
             hostname = "localhost";

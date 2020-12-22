@@ -7,7 +7,7 @@ import java.net.Socket;
 //import java.util.ArrayList;
 
 public class Jobcreator2 implements Runnable {
-    public static int port = 5000;
+    public static int port = 4999;
 
     public Socket socket;
     public ServerSocket serverSocket;

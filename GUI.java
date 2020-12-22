@@ -84,10 +84,14 @@ public class GUI extends JPanel {
         j1.multiJob = 3;
         j1.mode = options.getSelectedIndex();
         j1.IP = input1.getText();
+        j2.multiJob = 3;
+        j2.mode = options.getSelectedIndex();
+        j2.IP = input1.getText();
         Thread t1 = new Thread(j1);
+        Thread t2 = new Thread(j2);
         t1.start();
+        t2.start();
 //        while(j1.result == null) { }
-//        j2.start();
         output.setText("Output: " + j1.result);
         output.setVisible(true);
         ok.setVisible(true);
