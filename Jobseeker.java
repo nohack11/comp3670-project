@@ -96,6 +96,7 @@ public class Jobseeker{
                         toServer.flush();
                         socket.close();
                         reader.close();
+                        theFile.close();
                         return;
                     case 4:
                         String targetIp = reader.readLine();
@@ -106,11 +107,17 @@ public class Jobseeker{
                         tcpAttack(target, port);
                 }
                 toServer.flush();
+                theFile.close();
             }
         }
         catch(Exception e) {
-            if (toServer != null)
+            if (toServer != null) {
                 toServer.println("error"); // Input error
+            }
+            else{
+                System.out.println("File writing may have failed");
+                e.printStackTrace();
+            }
         }
     }
 
@@ -331,6 +338,7 @@ public class Jobseeker{
         try {
             System.out.println("All the neighbors");
             networkInterface = new NifSelector().selectNetworkInterface();
+            //if(System)
             System.out.println("You chose: "+networkInterface);
             theFile.write("All the neighbors\n You chose: "+networkInterface+"\n");
         } catch (IOException e) {
