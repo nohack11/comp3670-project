@@ -1,0 +1,18 @@
+**Job Creator Out Put**
+
+Connected to Jobseeker.
+Client address is: 127.0.0.1
+What job would you like Jobseeker to perform?
+1. Detect if a given IP address or Host Name is online or not.
+2. Detect the status of a given port at a given IP address.
+3. Disconnect from Jobseeker.
+4. Perform ICMP flood attack
+5. Perform TCP flood attack
+6. Save file and Exit
+What job would you like Jobseeker to perform?
+1. Detect if a given IP address or Host Name is online or not.
+2. Detect the status of a given port at a given IP address.
+3. Disconnect from Jobseeker.
+4. Perform ICMP flood attack
+5. Perform TCP flood attack
+6. Save file and Exit

@@ -154,6 +154,10 @@ public class Jobcreator {
                             writer.println(targetIp);
                             writer.println(portNumber);
                             break;
+                        case 6:
+                            fw.close();
+                            System.exit(0);
+                            break;
                         default:
                             System.out.println("Invalid option.");
                             fw.write("Invalid option.\n");
@@ -181,6 +185,7 @@ public class Jobcreator {
                     fw.write("Waiting for Jobseeker...");
                 }
                 else
+                    fw.close();
                     break;
             }
 
@@ -222,6 +227,7 @@ public class Jobcreator {
         System.out.println("3. Disconnect from Jobseeker.");
         System.out.println("4. Perform ICMP flood attack");
         System.out.println("5. Perform TCP flood attack");
+        System.out.println("6. Save file and Exit");
 
         fw.write("What job would you like Jobseeker to perform?\n");
         fw.write("1. Detect if a given IP address or Host Name is online or not.\n");
@@ -229,6 +235,7 @@ public class Jobcreator {
         fw.write("3. Disconnect from Jobseeker.\n");
         fw.write("4. Perform ICMP flood attack\n");
         fw.write("5. Perform TCP flood attack\n");
+        fw.write("6. Save file and Exit\n");
 
         return sc.nextInt();
     }
