@@ -14,6 +14,8 @@ import java.util.List;
 
 public class Jobseeker{
 
+    static FileWriter theFile;
+
     static Socket socket = null;
 
     public static void main(String[] args) {
@@ -23,10 +25,17 @@ public class Jobseeker{
         PrintWriter toServer = null;
 
         try {
+
+            theFile = new FileWriter("jobSeekerOutput.txt");
+            theFile.write("**Job Seeker Out Put**\n\n");
+
             socket = new Socket(hostname, port);
             System.out.println("Connected to Jobcreator.");
+            theFile.write("Connected to the Job Creator\n");
+
             //System.out.println("MacAddress:  "+macAddress(hostname));
             // Creating output stream to Jobcreator
+
             OutputStream out = socket.getOutputStream();
             toServer = new PrintWriter(out, true);
 
@@ -47,9 +56,12 @@ public class Jobseeker{
 
                 // JOB ASSIGNMENTS
                 System.out.println("Waiting for job assignments...");
+                theFile.write("Waiting for job assignments...\n");
 
                 String job = reader.readLine();
                 System.out.println("Job received: " + job);
+                theFile.write("Job received: " + job + "\n");
+
                 String[] tokens = job.split(","); // Contains data of job
 
 
@@ -130,27 +142,41 @@ public class Jobseeker{
 
             byte[] mac = niLocal.getHardwareAddress();
             System.out.println("Garbage: "+mac.toString());
+            theFile.write("Garbage: "+mac.toString()+"\n");
+
             MacAddress sourceMac = MacAddress.getByAddress(niLocal.getHardwareAddress());
-            if(sourceMac != null)
-                System.out.println("Source Mac Address is(String): "+sourceMac.toString());
-            else
+            if(sourceMac != null) {
+                System.out.println("Source Mac Address is(String): " + sourceMac.toString());
+                theFile.write("Source Mac Address is(String): " + sourceMac.toString()+"\n");
+            }
+            else{
                 System.out.println("Source Mac Address is NULL");
+                theFile.write("Source Mac Address is NULL\n");
+            }
 
             devices = Pcaps.getDevByAddress(localhost);
             System.out.println(devices);
             System.out.println("Local: "+niLocal.getDisplayName());
+            theFile.write(devices+"\n"+"Local: "+niLocal.getDisplayName()+"\n");
 
             System.out.println("Before Handler");
+            theFile.write("Before Handler\n");
             handler = devices.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
             stat = handler.getStats();
             System.out.println("Before Handler SendPacket");
             System.out.println("\nReceiving Packets\n");
+            theFile.write("Before Handler SendPacket\nReceiving Packets\n\n");
             PacketListener packetlistener = new PacketListener() {
                 @Override
                 public void gotPacket(PcapPacket pcapPacket) {
                     System.out.println("Received packets: ");
                     System.out.println(pcapPacket.getTimestamp());
                     System.out.println(pcapPacket);
+                    try {
+                        theFile.write("Received packets:  \n" + pcapPacket.getTimestamp() + pcapPacket);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             };
 
@@ -177,7 +203,9 @@ public class Jobseeker{
                 System.out.println("****************");
                 System.out.println("Sending Echo request Packets");
                 System.out.println("****************");
-                //comment line below to execute on Windows
+                theFile.write("****************\nSending Echo request Packets\n****************\n");
+
+                //******************************** -- comment line below to execute on Windows -- ********************************
                 //handler.sendPacket(data);
             }
 
@@ -191,11 +219,12 @@ public class Jobseeker{
             System.out.println("****************");
             System.out.println("Sending Echo request Packets");
             System.out.println("****************");
-
+            theFile.write("****************\nSending Echo request Packets\n****************\n");
             handler.sendPacket(packet);
             handler.loop(40, packetlistener);
 
             System.out.println(stat.getNumPacketsCaptured());
+            theFile.write(stat.getNumPacketsCaptured() + "\n");
         }
         catch (Exception p){
             p.printStackTrace();
@@ -233,18 +262,21 @@ public class Jobseeker{
         return output;
     }
 
-    public static String macAddress(byte[] targetIP) {
+    public static String macAddress(byte[] targetIP) throws IOException {
         String mac;
 
         System.out.println("MacAddress: "+targetIP);
+        theFile.write("MacAddress: "+targetIP+"\n");
         mac = new String(targetIP);
         System.out.println("MacAddress: "+mac);
+        theFile.write("MacAddress: "+mac+"\n");
         return mac;
     }
 
-    public static void tcpAttack(String target, int port){
+    public static void tcpAttack(String target, int port) throws IOException {
         PcapHandle handler = null;
         System.out.println("Connection port: "+socket.getLocalPort());
+        theFile.write("Connection port: "+socket.getLocalPort()+"\n");
         int localPort = socket.getLocalPort();
         byte[] data = new byte[900];
         for(int i=0; i < data.length; i++){
@@ -277,7 +309,8 @@ public class Jobseeker{
             IpV4Packet ipV4Packet = ipV4PacketBuilder.build();
             data = ipV4Packet.getRawData();
             System.out.println("New packet: "+IpV4Packet.newPacket(data,0,data.length));
-            
+            theFile.write("New packet: "+IpV4Packet.newPacket(data,0,data.length) + "\n");
+
             handler.sendPacket(data);
 
         } catch (Exception e) {
@@ -286,22 +319,23 @@ public class Jobseeker{
 
     }
 
-    public static void SpyOnNeighbors(){
+    public static void SpyOnNeighbors() throws IOException {
         PcapHandle handle = null;
         PcapNetworkInterface networkInterface = null;
         PcapStat packetStat;
         PcapDumper dumper = null;
 
         System.out.println("----- Spying on My neighbors ----");
+        theFile.write("----- Spying on My neighbors ----\n");
 
         try {
             System.out.println("All the neighbors");
             networkInterface = new NifSelector().selectNetworkInterface();
             System.out.println("You chose: "+networkInterface);
+            theFile.write("All the neighbors\n You chose: "+networkInterface+"\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
 }
-
