@@ -28,9 +28,9 @@ public class Jobcreator {
     //        fw = new FileWriter("jobCreatorOutput.txt");
     //    }
     //    catch (IOException e) {
-   //         e.printStackTrace();
-   //     }
-   // }
+    //         e.printStackTrace();
+    //     }
+    // }
 
 
     public static void main(String[] args) {
@@ -138,6 +138,7 @@ public class Jobcreator {
                         case 4:
                             writer.println("4,");
                             System.out.println("Enter the IP address you would like to launch an attack on:");
+                            fw.write("Enter the IP address you would like to launch an attack on:\n");
                             String target = sc.next();
                             writer.println(target);
                             //icmpAttack("localhost",client);
@@ -145,8 +146,10 @@ public class Jobcreator {
                         case 5:
                             writer.println("5,");
                             System.out.println("Enter IP address:");
+                            fw.write("Enter IP Address:\n");
                             String targetIp = sc.next();
                             System.out.println("Enter Port number: ");
+                            fw.write("Enter Port number:\n");
                             int portNumber = sc.nextInt();
                             writer.println(targetIp);
                             writer.println(portNumber);
