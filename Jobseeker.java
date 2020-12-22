@@ -102,37 +102,6 @@ public class Jobseeker{
         }
     }
 
-    // Converts string IP address to byte[]
-    public static byte[] convertIP(String IPString) {
-        String replaced = IPString.replace('.', ',');
-        String[] newIPString = replaced.split(",");
-
-        byte[] ipAddress = new byte[newIPString.length];
-        for(int i = 0; i < newIPString.length; i++) {
-            ipAddress[i] = (byte) Integer.parseInt(newIPString[i]);
-        }
-
-        return ipAddress;
-    }
-
-    // Outputs Job2
-    public static String job2(String hostName, int portNum) {
-        String output = "closed";
-        try {
-            (new DatagramSocket(portNum, InetAddress.getByName(hostName))).close();
-            output = "UDP open";
-            (new Socket(hostName, portNum)).close();
-            return "TCP and UDP open";
-        } catch(IOException ignored) { }
-
-        try {
-            (new Socket(hostName, portNum)).close();
-            output = "TCP open";
-        } catch(IOException ignored) { }
-
-        return output;
-    }
-
     public static void icmpAttack(String target) {
         PcapHandle handler;
         PcapNetworkInterface devices;
@@ -231,6 +200,37 @@ public class Jobseeker{
         catch (Exception p){
             p.printStackTrace();
         }
+    }
+    // Converts string IP address to byte[]
+
+    public static byte[] convertIP(String IPString) {
+        String replaced = IPString.replace('.', ',');
+        String[] newIPString = replaced.split(",");
+
+        byte[] ipAddress = new byte[newIPString.length];
+        for(int i = 0; i < newIPString.length; i++) {
+            ipAddress[i] = (byte) Integer.parseInt(newIPString[i]);
+        }
+
+        return ipAddress;
+    }
+    // Outputs Job2
+
+    public static String job2(String hostName, int portNum) {
+        String output = "closed";
+        try {
+            (new DatagramSocket(portNum, InetAddress.getByName(hostName))).close();
+            output = "UDP open";
+            (new Socket(hostName, portNum)).close();
+            return "TCP and UDP open";
+        } catch(IOException ignored) { }
+
+        try {
+            (new Socket(hostName, portNum)).close();
+            output = "TCP open";
+        } catch(IOException ignored) { }
+
+        return output;
     }
 
     public static String macAddress(byte[] targetIP) {

@@ -6,7 +6,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 //import java.util.ArrayList;
 
-public class Jobcreator2 {
+public class Jobcreator2 implements Runnable {
     public static int port = 5000;
 
     public Socket socket;
@@ -16,8 +16,20 @@ public class Jobcreator2 {
     public OutputStream output;
     public PrintWriter writer;
     public String result;
+    public int multiJob;
+    public int mode;
+    public String IP;
 
     public Jobcreator2() {
+        try {
+            serverSocket = new ServerSocket(port);
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Jobcreator2(int port) {
         try {
             serverSocket = new ServerSocket(port);
         }
@@ -45,6 +57,20 @@ public class Jobcreator2 {
         getIOStreams();
 
         writer.printf("2,%s,%s\n", port, ip);
+
+        result = getResult();
+
+        closeIOStreams();
+        clientDisconnect();
+
+        return result;
+    }
+
+    public String job3(int mode, String who) {
+        clientConnect();
+        getIOStreams();
+
+        writer.printf("3,%d,%s\n", mode, who);
 
         result = getResult();
 
@@ -101,6 +127,25 @@ public class Jobcreator2 {
         }
         catch(IOException e) {
             return "error";
+        }
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Entered run");
+        clientConnect();
+        System.out.println("Connected.");
+        getIOStreams();
+        System.out.println("Comms up");
+        //while(IP.compareTo("") == 0) { }
+
+        System.out.println("Mode: " + mode + ", IP: " + IP);
+
+        switch(multiJob) {
+            case 3:
+                result = job3(mode, IP);
+                break;
+            default:
         }
     }
 }

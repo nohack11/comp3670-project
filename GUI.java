@@ -11,6 +11,8 @@ public class GUI extends JPanel {
     public JPanel panel1, panel2, panel3;
     boolean activateOptions = false;
     Jobcreator2 jobcreator2;
+    Jobcreator2 j1 = new Jobcreator2(65000);
+    Jobcreator2 j2 = new Jobcreator2(5002);
 
     public GUI() {
         super();
@@ -79,7 +81,13 @@ public class GUI extends JPanel {
     }
 
     public void job3() {
-        output.setText("Output: Mode: " + options.getSelectedIndex() + ", Who: " + input1.getText());
+        jobcreator2.multiJob = 3;
+        jobcreator2.mode = options.getSelectedIndex();
+        jobcreator2.IP = input1.getText();
+        Thread t1 = new Thread(j1);
+        t1.start();
+//        j2.start();
+        output.setText("Output: " + jobcreator2.result);
         output.setVisible(true);
         ok.setVisible(true);
         panel3.revalidate();
@@ -301,8 +309,9 @@ public class GUI extends JPanel {
                         createDialog("Input Error: IP Address", "Please enter an IP Address.");
                     else if(input1.getText().compareTo("") == 0 && options.getSelectedIndex() == 2)
                         createDialog("Input Error: Subnet", "Please enter a Subnet.");
-                    else
+                    else {
                         job3();
+                    }
                     break;
                 case 6:
                     if(input1.getText().compareTo("") == 0 && input2.getText().compareTo("") == 0)
