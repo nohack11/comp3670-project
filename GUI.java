@@ -11,7 +11,7 @@ public class GUI extends JPanel {
     public JPanel panel1, panel2, panel3;
     boolean activateOptions = false;
     Jobcreator2 jobcreator2;
-    Jobcreator2 j1 = new Jobcreator2(65000);
+    Jobcreator2 j1 = new Jobcreator2(5001);
     Jobcreator2 j2 = new Jobcreator2(5002);
 
     public GUI() {
@@ -81,13 +81,14 @@ public class GUI extends JPanel {
     }
 
     public void job3() {
-        jobcreator2.multiJob = 3;
-        jobcreator2.mode = options.getSelectedIndex();
-        jobcreator2.IP = input1.getText();
+        j1.multiJob = 3;
+        j1.mode = options.getSelectedIndex();
+        j1.IP = input1.getText();
         Thread t1 = new Thread(j1);
         t1.start();
+//        while(j1.result == null) { }
 //        j2.start();
-        output.setText("Output: " + jobcreator2.result);
+        output.setText("Output: " + j1.result);
         output.setVisible(true);
         ok.setVisible(true);
         panel3.revalidate();

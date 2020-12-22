@@ -130,6 +130,10 @@ public class Jobcreator2 implements Runnable {
         }
     }
 
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+
     @Override
     public void run() {
         System.out.println("Entered run");
@@ -137,7 +141,7 @@ public class Jobcreator2 implements Runnable {
         System.out.println("Connected.");
         getIOStreams();
         System.out.println("Comms up");
-        //while(IP.compareTo("") == 0) { }
+        while(IP == null) { }
 
         System.out.println("Mode: " + mode + ", IP: " + IP);
 
