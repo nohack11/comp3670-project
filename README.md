@@ -19,4 +19,14 @@ Please note that the output of each client and server has been saved into its ow
 - spy on neighbours 
 - run the GUI of the code
 
+> **To Run 1 to 1 Jobs**
+>
+> Set Jobseeker2.java port number to 4999
+> 
+> **To Run 1 to Many Jobs**
+> 
+> Run Jobseeker2.java on two different devices
+>
+> Set the port number for each to 5001 and 5002 respectively 
+
 If you have any difficulty using the program, please do contact us. Thank you
