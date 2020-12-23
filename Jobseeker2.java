@@ -111,8 +111,14 @@ public class Jobseeker2 {
                 break;
             // JOB: 3
             case 3:
-                icmpAttack(tokens[2]);
-                writer.println("Attack done.");
+                for(int i = 0; i < 100; i++) {
+                    icmpAttack(tokens[2]);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 break;
             default:
                 writer.println("Other job output.");
@@ -168,6 +174,7 @@ public class Jobseeker2 {
     }
 
     public static void icmpAttack(String target) {
+        System.out.println("Entered icmpAttack.");
         PcapHandle handler;
         PcapNetworkInterface devices;
         PcapStat stat;
@@ -258,7 +265,7 @@ public class Jobseeker2 {
             System.out.println("****************");
 
             handler.sendPacket(packet);
-            handler.loop(40, packetlistener);
+            //handler.loop(40, packetlistener);
 
             System.out.println(stat.getNumPacketsCaptured());
         }
@@ -268,7 +275,7 @@ public class Jobseeker2 {
     }
 
     public static void main(String[] args) {
-        int port = 4999;
+        int port = 5001;
         String hostname = getHostname();
         if(hostname.compareTo("unknown") == 0)
             hostname = "localhost";

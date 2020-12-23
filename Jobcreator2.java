@@ -80,6 +80,15 @@ public class Jobcreator2 implements Runnable {
         return result;
     }
 
+    public String job3() {
+        writer.printf("3,%d,%s\n", mode, IP);
+
+        closeIOStreams();
+        clientDisconnect();
+
+        return result;
+    }
+
     public void clientConnect() {
         try {
             socket = serverSocket.accept();
@@ -136,18 +145,14 @@ public class Jobcreator2 implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Entered run");
         clientConnect();
-        System.out.println("Connected.");
         getIOStreams();
-        System.out.println("Comms up");
         while(IP == null) { }
 
-        System.out.println("Mode: " + mode + ", IP: " + IP);
 
         switch(multiJob) {
             case 3:
-                result = job3(mode, IP);
+                result = job3();
                 break;
             default:
         }
