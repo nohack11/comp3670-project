@@ -20,3 +20,5 @@ Please note that the output of each client and server has been saved into its ow
 - run the GUI of the code
 
 If you have any difficulty using the program, please do contact us. Thank you
+
+rasekh@uwindsor.ca
