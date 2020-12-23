@@ -139,6 +139,10 @@ public class Jobseeker2 {
                     }
                 }
                 break;
+            case 5:
+                try {
+                    Traceroute(socket.getInetAddress().getHostAddress());
+                } catch (IOException e) {e.printStackTrace();}
             default:
                 writer.println("Other job output.");
                 break;

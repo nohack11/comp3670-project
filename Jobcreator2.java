@@ -85,6 +85,18 @@ public class Jobcreator2 implements Runnable {
         return result;
     }
 
+    public String job5() {
+        clientConnect();
+        getIOStreams();
+
+        writer.printf("5,");
+
+        closeIOStreams();
+        clientDisconnect();
+
+        return result;
+    }
+
     public void clientConnect() {
         try {
             socket = serverSocket.accept();

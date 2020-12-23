@@ -60,8 +60,10 @@ public class GUI extends JPanel {
         menu.addItem("1. Detect if a given IP Address or Host Name is online or not.");
         menu.addItem("2. Detect the status of a given port at a given IP Address.");
         menu.addItem("******************* One-to-Many Jobs *******************");
-        menu.addItem("3. ICMP flood attack against a given IP or subnet");
-        menu.addItem("4. TCP flood attack against a given port on a given IP");
+        menu.addItem("3. ICMP flood attack against a given IP or subnet.");
+        menu.addItem("4. TCP flood attack against a given port on a given IP.");
+        menu.addItem("******************* Other Jobs *******************");
+        menu.addItem("5. Traceroute.");
     }
 
     public void job1() {
@@ -112,6 +114,14 @@ public class GUI extends JPanel {
         //Thread t2 = new Thread(j2);
         t1.start();
         //t2.start();
+        ok.setVisible(true);
+        panel3.revalidate();
+    }
+
+    public void job5() {
+        jobcreator2.job5();
+        output.setText("Output: Traceroute performed.");
+        output.setVisible(true);
         ok.setVisible(true);
         panel3.revalidate();
     }
@@ -185,6 +195,12 @@ public class GUI extends JPanel {
         panel2.revalidate();
     }
 
+    public void job5Add() {
+        execute.setVisible(true);
+        panel2.add(execute);
+        panel2.revalidate();
+    }
+
     public void clearInputs() {
         input1.setText("");
         input2.setText("");
@@ -232,6 +248,7 @@ public class GUI extends JPanel {
                 case 0:
                 case 1:
                 case 4:
+                case 7:
                 default:
                     break;
                 case 2:
@@ -245,6 +262,9 @@ public class GUI extends JPanel {
                     break;
                 case 6:
                     job4Add();
+                    break;
+                case 8:
+                    job5Add();
                     break;
             }
         }
@@ -300,6 +320,7 @@ public class GUI extends JPanel {
                 case 0:
                 case 1:
                 case 4:
+                case 7:
                 default:
                     break;
                 case 2:
@@ -338,6 +359,9 @@ public class GUI extends JPanel {
                         createDialog("Input Error: IP Address", "Please enter an IP Address.");
                     else
                         job4();
+                    break;
+                case 8:
+                    job5();
                     break;
             }
         }
