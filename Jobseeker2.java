@@ -5,6 +5,9 @@ import org.pcap4j.util.MacAddress;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 
 public class Jobseeker2 {
     public static Socket socket;
@@ -13,6 +16,8 @@ public class Jobseeker2 {
     public static OutputStream output;
     public static PrintWriter writer;
     public static boolean unknownHost;
+    public final static String os = System.getProperty("os.name").toLowerCase();
+    public static FileWriter theFile;
 
     public static String getHostname() {
         try {
@@ -113,6 +118,20 @@ public class Jobseeker2 {
             case 3:
                 for(int i = 0; i < 100; i++) {
                     icmpAttack(tokens[2]);
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            case 4:
+                for(int i = 0; i < 100; i++) {
+                    try {
+                        tcpAttack(tokens[1], Integer.parseInt(tokens[2]));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException e) {
@@ -274,9 +293,95 @@ public class Jobseeker2 {
         }
     }
 
+    public static void tcpAttack(String target, int port) throws IOException {
+        PcapHandle handler = null;
+        PcapNetworkInterface devices;
+
+        System.out.println("Connection port: "+socket.getLocalPort());
+        theFile.write("Connection port: "+socket.getLocalPort()+"\n");
+        int localPort = socket.getLocalPort();
+        byte[] data = new byte[900];
+        for(int i=0; i < data.length; i++){
+            data[i] = (byte) i;
+        }
+
+        try {
+            // Getting the inet address of both the localhost and targethost
+            InetAddress targetAddress = InetAddress.getByName(target);
+            InetAddress localhost = InetAddress.getLocalHost();
+
+            // Creating a TCP packet
+            TcpPacket.Builder tcpPacket = new TcpPacket.Builder();
+            tcpPacket.payloadBuilder(new UnknownPacket.Builder().rawData(data));
+            tcpPacket.srcAddr(localhost);
+            tcpPacket.dstAddr(targetAddress);
+            tcpPacket.srcPort(TcpPort.getInstance((short)localPort));
+            tcpPacket.dstPort(TcpPort.getInstance((short) port));
+            tcpPacket.correctLengthAtBuild(true);
+            tcpPacket.correctChecksumAtBuild(true);
+
+            IpV4Packet.Builder ipV4PacketBuilder = new IpV4Packet.Builder();
+            ipV4PacketBuilder.payloadBuilder(tcpPacket);
+            ipV4PacketBuilder.version(IpVersion.IPV4);
+            ipV4PacketBuilder.tos((IpV4Packet.IpV4Tos) () -> (byte) 0);
+            ipV4PacketBuilder.protocol(IpNumber.TCP);
+            ipV4PacketBuilder.srcAddr((Inet4Address) localhost);
+            ipV4PacketBuilder.dstAddr((Inet4Address) targetAddress);
+            ipV4PacketBuilder.correctLengthAtBuild(true);
+            ipV4PacketBuilder.correctChecksumAtBuild(true);
+
+            IpV4Packet ipV4Packet = ipV4PacketBuilder.build();
+            data = ipV4Packet.getRawData();
+            System.out.println("New packet: "+IpV4Packet.newPacket(data,0,data.length));
+            theFile.write("New packet: "+IpV4Packet.newPacket(data,0,data.length) + "\n");
+            devices = Pcaps.getDevByAddress(localhost);
+            handler = devices.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
+            handler.sendPacket(data);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void Traceroute(String ip) throws IOException {
+
+
+
+        Process traceRt;
+
+
+
+        if(os.contains("win"))          //if the operating system is Windows
+            traceRt = Runtime.getRuntime().exec("tracert " + ip);
+
+        else                            //if it's mac or linux
+            traceRt = Runtime.getRuntime().exec("traceroute " + ip);
+
+        StringBuilder textBuilder = new StringBuilder();
+
+
+        try (Reader reader = new BufferedReader(new InputStreamReader(traceRt.getInputStream(), Charset.forName(StandardCharsets.UTF_8.name())))) {
+
+            int c = 0;
+            while ((c = reader.read()) != -1) {
+                textBuilder.append((char) c);
+            }
+        }
+
+        System.out.println(textBuilder);
+        theFile.write(textBuilder+"\n");
+
+    }
+
     public static void main(String[] args) {
-        int port = 5001;
+        int port = 4999;
         String hostname = getHostname();
+        try {
+            theFile = new FileWriter("jobSeekerOutput.txt");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         if(hostname.compareTo("unknown") == 0)
             hostname = "localhost";
 

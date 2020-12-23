@@ -19,6 +19,7 @@ public class Jobcreator2 implements Runnable {
     public int multiJob;
     public int mode;
     public String IP;
+    public int jobPort;
 
     public Jobcreator2() {
         try {
@@ -66,13 +67,8 @@ public class Jobcreator2 implements Runnable {
         return result;
     }
 
-    public String job3(int mode, String who) {
-        clientConnect();
-        getIOStreams();
-
-        writer.printf("3,%d,%s\n", mode, who);
-
-        result = getResult();
+    public String job3() {
+        writer.printf("3,%d,%s\n", mode, IP);
 
         closeIOStreams();
         clientDisconnect();
@@ -80,8 +76,8 @@ public class Jobcreator2 implements Runnable {
         return result;
     }
 
-    public String job3() {
-        writer.printf("3,%d,%s\n", mode, IP);
+    public String job4() {
+        writer.printf("4,%s,%d", IP, jobPort);
 
         closeIOStreams();
         clientDisconnect();
@@ -153,6 +149,9 @@ public class Jobcreator2 implements Runnable {
         switch(multiJob) {
             case 3:
                 result = job3();
+                break;
+            case 4:
+                result = job4();
                 break;
             default:
         }

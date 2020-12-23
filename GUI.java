@@ -99,8 +99,19 @@ public class GUI extends JPanel {
     }
 
     public void job4() {
-        output.setText("Output: Port: " + input1.getText() + ", Who: " + input2.getText());
+        j1.multiJob = 4;
+        j1.IP = input2.getText();
+        j1.jobPort = Integer.parseInt(input1.getText());
+//        j2.multiJob = 4;
+//        j2.IP = input2.getText();
+//        j2.jobPort = Integer.parseInt(input1.getText());
+        output.setText("Output: Launched TCP attack on " + input2.getText() + " on port " + input1.getText());
         output.setVisible(true);
+        panel3.revalidate();
+        Thread t1 = new Thread(j1);
+        //Thread t2 = new Thread(j2);
+        t1.start();
+        //t2.start();
         ok.setVisible(true);
         panel3.revalidate();
     }
