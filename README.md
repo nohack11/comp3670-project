@@ -1,5 +1,6 @@
 # COMP3670-Project
 ---
+![GUI interface](https://github.com/nohack11/comp3670-project/blob/master/Images/GUI1.png)
 > We are designing a commucation protocol using java
 ### Group Members
 * [Ariya Rasekh](https://github.com/AriyaRasekh)
