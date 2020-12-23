@@ -28,15 +28,7 @@ public class Jobcreator {
 
     static FileWriter fw;
 
-    //static {
-    //    try {
-    //        fw = new FileWriter("jobCreatorOutput.txt");
-    //    }
-    //    catch (IOException e) {
-    //         e.printStackTrace();
-    //     }
-    // }
-
+    public final static String os = System.getProperty("os.name").toLowerCase();        //to detect the OS
 
     public static void main(String[] args) {
         int port = 5000; // for peer to peer connection change to port = 61555
@@ -268,9 +260,15 @@ public class Jobcreator {
 
 
         Process traceRt;
-        traceRt = Runtime.getRuntime().exec("tracert " + ip);
 
-        //traceRt = Runtime.getRuntime().exec("traceroute " + ip);
+
+
+        if(os.contains("win"))          //if the operating system is Windows
+            traceRt = Runtime.getRuntime().exec("tracert " + ip);
+
+        else                            //if it's mac or linux
+            traceRt = Runtime.getRuntime().exec("traceroute " + ip);
+
         StringBuilder textBuilder = new StringBuilder();
 
 

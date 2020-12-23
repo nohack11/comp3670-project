@@ -14,6 +14,7 @@ import java.util.List;
 
 public class Jobseeker{
 
+    public final static String os = System.getProperty("os.name").toLowerCase();        //to detect the OS
     static FileWriter theFile;
 
     static Socket socket = null;
@@ -212,8 +213,9 @@ public class Jobseeker{
                 System.out.println("****************");
                 theFile.write("****************\nSending Echo request Packets\n****************\n");
 
-                //******************************** -- comment line below to execute on Windows -- ********************************
-                //handler.sendPacket(data);
+                //should not be executed om windows
+                if(!os.contains("win"))
+                    handler.sendPacket(data);
             }
 
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
