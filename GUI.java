@@ -64,6 +64,7 @@ public class GUI extends JPanel {
         menu.addItem("4. TCP flood attack against a given port on a given IP.");
         menu.addItem("******************* Other Jobs *******************");
         menu.addItem("5. Traceroute.");
+        menu.addItem("6. Neighbor spy.");
     }
 
     public void job1() {
@@ -201,6 +202,13 @@ public class GUI extends JPanel {
         panel2.revalidate();
     }
 
+    public void job6Add() {
+        label1.setText("Please use Jobcreator.java and Jobseeker.java for this functionality.");
+        label1.setVisible(true);
+        panel2.add(label1);
+        panel2.revalidate();
+    }
+
     public void clearInputs() {
         input1.setText("");
         input2.setText("");
@@ -265,6 +273,9 @@ public class GUI extends JPanel {
                     break;
                 case 8:
                     job5Add();
+                    break;
+                case 9:
+                    job6Add();
                     break;
             }
         }
