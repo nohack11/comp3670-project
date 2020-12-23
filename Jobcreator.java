@@ -4,10 +4,15 @@ import org.pcap4j.core.PacketListener;
 import org.pcap4j.core.PcapPacket;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
 //import java.util.concurrent.ExecutorService;
 
 // This jobcreator Prints out a message to notify connection with jobseeker
@@ -158,6 +163,11 @@ public class Jobcreator {
                             fw.close();
                             System.exit(0);
                             break;
+
+                        case 7:
+                            Traceroute(client);
+                            break;
+
                         default:
                             System.out.println("Invalid option.");
                             fw.write("Invalid option.\n");
@@ -228,6 +238,7 @@ public class Jobcreator {
         System.out.println("4. Perform ICMP flood attack");
         System.out.println("5. Perform TCP flood attack");
         System.out.println("6. Save file and Exit");
+        System.out.println("7. Performing the traceroute");
 
         fw.write("What job would you like Jobseeker to perform?\n");
         fw.write("1. Detect if a given IP address or Host Name is online or not.\n");
@@ -236,6 +247,7 @@ public class Jobcreator {
         fw.write("4. Perform ICMP flood attack\n");
         fw.write("5. Perform TCP flood attack\n");
         fw.write("6. Save file and Exit\n");
+        fw.write("7. Performing the traceroute\n");
 
         return sc.nextInt();
     }
@@ -249,8 +261,31 @@ public class Jobcreator {
         fw.write("Launching ICMP on "+clients.size()+" jobseeker clients\n");
         writer.println("icmp");
         writer.println(target);
+    }
 
+    public static void Traceroute(String ip) throws IOException {
+
+
+
+        Process traceRt;
+        traceRt = Runtime.getRuntime().exec("tracert " + ip);
+
+        //traceRt = Runtime.getRuntime().exec("traceroute " + ip);
+        StringBuilder textBuilder = new StringBuilder();
+
+
+        try (Reader reader = new BufferedReader(new InputStreamReader(traceRt.getInputStream(), Charset.forName(StandardCharsets.UTF_8.name())))) {
+
+            int c = 0;
+            while ((c = reader.read()) != -1) {
+                textBuilder.append((char) c);
+            }
+        }
+
+        System.out.println(textBuilder);
+        fw.write(textBuilder+"\n");
 
     }
+
 }
 
