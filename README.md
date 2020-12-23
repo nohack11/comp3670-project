@@ -7,7 +7,7 @@
 * [Bill Shema](https://github.com/nohack11)
 
 ### Steps to Run the program
-we recommend using Intellij Idea with pcap4j maven packages
+we recommend using IntelliJ Idea with pcap4j maven packages
 
 to run the program, please run the Jobcreator.java and then Jobseeker.java"
 
