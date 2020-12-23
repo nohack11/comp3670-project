@@ -3,15 +3,13 @@
 import org.pcap4j.core.PacketListener;
 import org.pcap4j.core.PcapPacket;
 
-import java.io.*;
-import java.net.InetAddress;
+import java.io.*;;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 //import java.util.concurrent.ExecutorService;
 
