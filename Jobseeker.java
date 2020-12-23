@@ -11,6 +11,8 @@ import java.io.*;
 import java.net.*;
 import java.util.List;
 
+import static org.pcap4j.core.PcapNetworkInterface.PromiscuousMode.PROMISCUOUS;
+
 
 public class Jobseeker{
 
@@ -70,7 +72,7 @@ public class Jobseeker{
                 switch (Integer.parseInt(tokens[0])) {
                     // JOB: Detect if a given IP address or Host Name is online or not
                     case 0:
-                        SpyOnNeighbors();
+                        SpyOnNeighbors("127.0.0.1");
                     case 1:
                         boolean isOnline;
                         // Detecting by IP
@@ -169,7 +171,7 @@ public class Jobseeker{
 
             System.out.println("Before Handler");
             theFile.write("Before Handler\n");
-            handler = devices.openLive(65570, PcapNetworkInterface.PromiscuousMode.PROMISCUOUS, 60);
+            handler = devices.openLive(65570, PROMISCUOUS, 60);
             stat = handler.getStats();
             System.out.println("Before Handler SendPacket");
             System.out.println("\nReceiving Packets\n");
@@ -221,6 +223,7 @@ public class Jobseeker{
             EthernetPacket.Builder ethernet = new EthernetPacket.Builder();
             ethernet.dstAddr(MacAddress.ETHER_BROADCAST_ADDRESS);
             ethernet.srcAddr(sourceMac);
+            //
             ethernet.type(EtherType.IPV4);
             ethernet.paddingAtBuild(true);
 
@@ -293,9 +296,11 @@ public class Jobseeker{
         }
 
         try {
+            // Getting the inet address of both the localhost and targethost
             InetAddress targetAddress = InetAddress.getByName(target);
             InetAddress localhost = InetAddress.getLocalHost();
 
+            // Creating a TCP packet
             TcpPacket.Builder tcpPacket = new TcpPacket.Builder();
             tcpPacket.payloadBuilder(new UnknownPacket.Builder().rawData(data));
             tcpPacket.srcAddr(localhost);
@@ -328,7 +333,9 @@ public class Jobseeker{
 
     }
 
-    public static void SpyOnNeighbors() throws IOException {
+    // This will mimic a MIMA(Man-In-Middle-Attack)
+    // The machine will give a false impression of being a router
+    public static void SpyOnNeighbors(String ip) throws IOException {
         PcapHandle handle = null;
         PcapNetworkInterface networkInterface = null;
         PcapStat packetStat;
@@ -340,12 +347,28 @@ public class Jobseeker{
         try {
             System.out.println("All the neighbors");
             networkInterface = new NifSelector().selectNetworkInterface();
-            //if(System)
+            handle = networkInterface.openLive(65536, PROMISCUOUS, 50);
             System.out.println("You chose: "+networkInterface);
             theFile.write("All the neighbors\n You chose: "+networkInterface+"\n");
+            PcapHandle finalHandle = handle;
+            PacketListener listener = pcapPacket -> packetPrint(pcapPacket, finalHandle);
+
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (PcapNativeException e) {
+            e.printStackTrace();
         }
+    }
+
+    public static void packetPrint(Packet packet, PcapHandle handle){
+        StringBuilder packetString = new StringBuilder();
+        packetString.append("Packet Captured: ");
+        packetString.append(handle.getTimestampPrecision());
+        packetString.append(" : ");
+
+        System.out.println(packetString);
+        System.out.println("- - - - - Packet  - - - - -- -");
+        System.out.println(packet);
     }
 
 }
